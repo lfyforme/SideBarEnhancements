@@ -21,7 +21,7 @@ class Preview extends Controller
             'surId'=>input('surId')
         ];
         $survey = model('survey')->with('question,question.answer')->where('surId',$data['surId'])->select();
-        $this->assign('surInfo',$survey[0]);
+        $this->assign('sur',$survey[0]);
         return view();
     }
     public function submitSur(){

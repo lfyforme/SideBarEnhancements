@@ -14,52 +14,62 @@
     <script src="/static/layui/layui.js"></script>
     <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onload="time('switch','sTime','eTime','surIsSetMax')">
 <form class="layui-form" action="">
-    <input type="hidden" value="{$surId}" id="surId">
+    <input type="hidden" value="{$data.surId}" id="surId">
     <div class="layui-form-item">
+        <?php $time = "1900-01-01 00:00:00" ?>
         <label class="layui-form-label" style="width: 100px">时间设置</label>
         <div class="layui-input-block">
-            <input type="checkbox" name="switch" lay-skin="switch" lay-filter="time">
+            <input type="checkbox" id="switch" name="switch" lay-skin="switch" lay-filter="time" {if $data.surBeginTime !=$time or $data.surEndTime !=$time}checked {/if}>
         </div>
     </div>
-    <div style="display: none;" id="time">
-        <div class="layui-form-item" style="margin-left: 30px;margin-top: -90px">
-            <div style="margin-bottom: 50px">
-                <input type="checkbox" name="" style="margin-top: 30px;" title="开始时间" lay-skin="primary"
-                       lay-filter="time_start">
-            </div>
-            <div class="layui-inline" style="padding-top: 30px;display: none" id="time_start">
-                <input type="text" class="layui-input" id="startTime" value="326565454565">
+    <div style="border-bottom: 1px dashed #cacbcc;width:350px;margin-left: 30px;margin-top: -10px"></div>
+    <div style="display: none;margin-top: -130px" id="time">
+
+        <div class="layui-form-item" style="margin-left: 30px;">
+            <input type="checkbox" name="checkbox" style="margin-top: 30px;"
+                   title="开始时间" lay-skin="primary" lay-filter="time_start" id="sTime" {if $data.surBeginTime !=$time}checked {/if}>
+            <div class="layui-inline" style="padding-top: 30px;" id="time_start">
+                <input type="hidden" value="{:url('index/surset/startTime')}" id="start"  >
+                <input type="text" class="layui-input" id="startTime" value="{$data.surBeginTime}"  disabled="disabled">
                 <i class="layui-icon" style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
             </div>
         </div>
-        <div class="layui-form-item" style="margin-left: 30px;margin-top: -50px;">
-            <div style="margin-top: 30px">
-                <input type="checkbox" name="" title="结束时间" lay-skin="primary" lay-filter="time_end">
-            </div>
-            <div class="layui-inline" style="padding-top: 30px;display: none" id="time_end">
-                <input type="text" class="layui-input" id="finaltime" value="9865656465">
+        <div class="layui-form-item" style="margin-left: 30px;margin-top: -60px">
+                <input type="checkbox" name="" title="结束时间" id="eTime" lay-skin="primary" lay-filter="time_end" {if $data.surEndTime !=$time}checked {/if}>
+            <div class="layui-inline" style="padding-top: 30px;" id="time_end">
+                <input type="hidden" value="{:url('index/surset/endTime')}" id="end" >
+                <input type="text" class="layui-input" id="finaltime" value="{$data.surEndTime}" disabled="disabled" onchange="startTime()">
                 <i class="layui-icon" style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
             </div>
         </div>
     </div>
 
-    <div style="margin-top: -40px">
-        <div class="layui-form-item" style="margin-left: 30px">
-            <input type="checkbox" name="" title="答题需要登录验证" id="login"
+    <div style="margin-top: -30px">
+        <div class="layui-form-item" style="margin-left: 30px;margin-bottom: 5px">
+            <input type="hidden" value="{$data.surIsLogin}" id="surLogin">
+            <input type="checkbox" name="" title="答题需要登录验证" id="login"  {if $data.surIsLogin !=0}checked {/if}
                    value="{:url('index/surset/setLogin')}" lay-filter="login" lay-skin="primary">
         </div>
-        <div class="layui-form-item" style="margin-left: 30px">
-            <input type="checkbox" name="" title="每个用户只能回答一次" lay-filter="count" lay-skin="primary">
-
+        <div class="layui-form-item" style="margin-left: 30px;margin-bottom: 5px">
+            <input type="checkbox" name="" title="设置回收答卷上限" id="surIsSetMax" lay-skin="primary" lay-filter="number"
+                   {if $data.surNum != 0}checked {/if} >
+            <div class="layui-inline"id="sur" style="padding-top: 15px">
+                <input type="hidden" id="setUrl" value="{:url('index/surset/setNum')}">
+                <input type="text"  name="title"   lay-verify="required|number" placeholder="回答卷数" class="layui-input"
+                       disabled="disabled"  onchange="surNum()" id="S" style="width: 80px;float: left"><span style="padding-bottom: -15px" >份</span>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: 30px"  >
+            <input type="hidden" value="{:url('index/surset/setPer')}" id="setPer">
+            <input type="checkbox" name="" title="每个用户只能回答一次" lay-filter="count" lay-skin="primary" {if $data.surPerNum == 1}checked {/if}>
         </div>
     </div>
-    <div>
-        <button onclick="submitF('{:url(" index
-        /surset/")}')">确认</button>
-    </div>
 </form>
-</body>
 <script src="/static/index/js/set.js"></script>
+
+
+</body>
+
 </html>

@@ -1,6 +1,6 @@
-<div style="margin-left: 450px;z-index: 9999" id="quesOp">
-    <span><a href="" style="padding: 6px">复制</a></span>
-    <span> <a href="javascript:;" onclick="deleteQues('{:url(\"index/question/deleteQues\")}',{$vo.quesId})" style="padding: 6px">删除</a></span>
-    <span><a href="javascript:;" onclick="logicSet({$vo.quesId})" style="padding: 6px">逻辑设置</a>
-    </span><span><a href="javascript:;"onclick="collect('{:url("index/question/collect")}',{$vo.quesId},{$vo.quesCollect})" style="padding: 6px">{if $vo.quesCollect == 0}收藏{else /}取消收藏{/if}</a></span>
+<div style="margin-left: 450px;z-index: 9999;margin-bottom: 20px;display: none" id="quesOp{$vo.quesId}">
+    <span><a href="" style="padding: 6px;text-decoration: none">复制</a></span>
+    <span> <a href="javascript:;"style="text-decoration: none" onclick="deleteQues('{:url(\"index/question/deleteQues\")}',{$vo.quesId})" style="padding: 6px">删除</a></span>
+    <span><a href="javascript:;"  onclick="logicSet({$vo.quesId})" style="padding: 6px;text-decoration: none">逻辑设置</a>
+    </span><span><a href="javascript:;" style="text-decoration: none" onclick="collect('{:url("index/question/collect")}',{$vo.quesId},{$vo.quesCollect})" style="padding: 6px">{if $vo.quesCollect == 0}收藏{else /}取消收藏{/if}</a></span>
 </div>

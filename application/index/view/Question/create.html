@@ -14,7 +14,8 @@
     <script src="/static/index/js/bootstrap.min.js"></script>
     <script src="/static/layui/layui.js"></script>
 </head>
-<form style="overflow-x: hidden;background-color: #f8f8f8" onload="">
+<body style="overflow-x: hidden;background-color: #fafafa" onload="">
+<form >
 {include file="public/_firstTitle" /}
 <div id="secondHeader">
     <nav class="navbar navbar-default navbar-static-top">
@@ -80,7 +81,7 @@
         </ul>
     </div>
 </div>
-<div class="editor_main" style="margin-top: 144px;margin-left:250px;background-color: white;width:950px">
+<div class="editor_main" style="margin-top: 144px;margin-left:300px;width:950px;background-color: white">
     <div class="survey_page"></div>
     <div class="survey_main">
         <input type="hidden" value="{$sur.surId}" id="surId">
@@ -109,20 +110,22 @@
         <form class="layui-form" action="">
         <div style="margin-left: 115px;margin-right: 90px;">
             {volist name="quesInfo" id="vo"}
+            <!--<?php $key = $key + 1 ?>-->
+            <span style="float: left">{$key}.</span>
                 {if $vo.quesType == "单选题"}
-                <div id="ques{$vo.quesId}">
+                <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}',this)" onmouseout="quesOpOut('{$vo.quesId}',this)">
                     <div onmouseover=""  onclick="addQues('添加单选题','{:url("index/question/single",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-                    style="width:950px;margin-left:-100px;padding-left:100px">
+                    style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px;">
                     <div style="width: 745px">
                         <input type="hidden" name="quesId" value="{$vo.quesId}">
                         <div style="padding-bottom: 10px">
                             <span style="margin-left: 5px">{$vo.quesTitle}</span>
                             {if $vo.quesReq == 1}<span style="color: red">*</span>{/if}
                         </div>
-                        <div style="margin-left: 10px">{$vo.quesDesc}</div>
+                        <div style="margin-left: 10px;margin-bottom: 5px">{$vo.quesDesc}</div>
                         <ul>
                             {volist name="vo.answer" id="vo2"}
-                            <li><input type="radio" style="margin-left: 10px;margin-right: 10px;margin-top: 20px">{$vo2.answer}</li>
+                            <li><input type="radio" style="margin-left: 10px;margin-right: 10px;margin-top: 20px" title="{$vo2.answer}"></li>
                             {/volist}
                         </ul>
                     </div>
@@ -131,19 +134,19 @@
                 </div>
                 {/if}
                 {if $vo.quesType == "多选题"}
-                 <div id="ques{$vo.quesId}">
+                 <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}')" onmouseout="quesOpOut('{$vo.quesId}')">
                     <div onclick="addQues('添加多选题','{:url("index/question/multiple",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-                     style="width:950px;margin-left:-100px;padding-left:100px">
+                     style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
                             <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
                             </div>
-                            <div style="margin-left: 10px">{$vo.quesDesc}</div>
+                            <div style="margin-left: 10px;margin-bottom: 10px">{$vo.quesDesc}</div>
 
                             <ul>
                                 {volist name="vo.answer" id="vo2"}
-                                <li><input type="checkbox" lay-skin="primary">{$vo2.answer}</li>
+                                <li  style="margin-top: 8px"><input type="checkbox" lay-skin="primary" title="{$vo2.answer}"></li>
                                 {/volist}
                             </ul>
                         </div>
@@ -152,9 +155,9 @@
                 </div>
                 {/if}
                 {if $vo.quesType == "矩形单选题"}
-                <div id="ques{$vo.quesId}">
+                <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}')" onmouseout="quesOpOut('{$vo.quesId}')">
                     <div onclick="addQues('添加矩形单选题','{:url("index/question/rectangleSig",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-                    style="width:950px;margin-left:-100px;padding-left:100px">
+                    style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                      <div style="width: 745px">
                         <input type="hidden" name="quesId" value="{$vo.quesId}">
                         <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
@@ -193,9 +196,9 @@
                     </div>
                 {/if}
                 {if $vo.quesType == "矩形多选题"}
-                <div id="ques{$vo.quesId}">
+                <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}')" onmouseout="quesOpOut('{$vo.quesId}')">
                     <div onclick="addQues('添加矩形多选题','{:url("index/question/rectangleMul",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-                    style="width:950px;margin-left:-100px;padding-left:100px">
+                    style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                            <input type="hidden" name="quesId" value="{$vo.quesId}">
                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
@@ -234,17 +237,17 @@
                     </div>
                 {/if}
                 {if $vo.quesType == "下拉题"}
-            <div id="ques{$vo.quesId}">
+            <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}')" onmouseout="quesOpOut('{$vo.quesId}')">
                     <div onclick="addQues('添加下拉题','{:url("index/question/pull",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-        style="width:950px;margin-left:-100px;padding-left:100px">
+        style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                     <div style="width: 745px">
                         <input type="hidden" name="quesId" value="{$vo.quesId}">
-                        <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                        <div style="padding-bottom: 10px;"><span style="margin-left: 5px">{$vo.quesTitle}</span>
                             {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
                         </div>
-                        <div style="margin-left: 10px">{$vo.quesDesc}</div>
-                        <select name="answer" id="answer" style="width: 50px">
-                            <option value="">请选择</option>
+                        <div style="margin-left: 10px;height: 25px;padding-bottom: 10px">{$vo.quesDesc}</div>
+                        <select name="answer" id="answer" style="!important;width: 150px" class="layui-inline">
+                            <option value="" >请选择</option>
                             {volist name="vo.answer" id="vo2"}
                                 <option value="{$vo2.answer}" style="margin-right: 10px;">{$vo2.answer}</option>
                             {/volist}
@@ -255,15 +258,15 @@
                 </div>
                 {/if}
                 {if $vo.quesType == "排序题"}
-    <div id="ques{$vo.quesId}">
+    <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}')" onmouseout="quesOpOut('{$vo.quesId}')">
                     <div onclick="addQues('添加排序题','{:url("index/question/sort",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-        style="width:950px;margin-left:-100px;padding-left:100px">
+        style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
                             <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
                             </div>
-                            <div style="margin-left: 10px">{$vo.quesDesc}</div>
+                            <div style="margin-left: 10px;margin-bottom: 10px">{$vo.quesDesc}</div>
                             <ul>
                                 {volist name="vo.answer" id="vo2"}
                                 <li><input type="checkbox" lay-skin="primary">
@@ -277,9 +280,9 @@
                 {/if}
                 {if $vo.quesType == "量标题"}
                 <?php $vo2 = $vo['scale'] ?>
-                <div id="ques{$vo.quesId}" >
+                <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}')" onmouseout="quesOpOut('{$vo.quesId}')" >
                     <div onclick="addQues('添加量表题','{:url("index/question/scale",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
-                    style="width:950px;margin-left:-100px;padding-left:100px">
+                    style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" id="scale{$vo2.scaleId}" value="{$vo2.scaleId}">
                             <input type="hidden" id="scale{$vo2.scaleRange}" value="{$vo2.scaleRange}">
@@ -290,12 +293,15 @@
                             <div style="margin-left: 10px">{$vo.quesDesc}</div>
 
                             <input type="hidden" value="">
-                            <div class="option"><span> <span style="color: gray;font-size: 12px;padding-right: 10px">非常不满意</span>
+                            <div class="option">
+                                <span>
+                                <span style="color: gray;font-size: 14px;padding-right: 10px;padding-top: 25px">非常不满意</span>
                                 <?php $scaleRange = $vo2['scaleRange'] + 1; ?>
                                {for start="1" end="$scaleRange"}
-                                    {$i}<input type="radio" name="">
+                                    <input type="radio" name="" title="{$i}">
                                 {/for}
-                                <span style="color: gray;font-size: 12px">非常满意</span></span></div>
+                                <span style="color: gray;font-size: 14px">非常满意</span>
+                                </span></div>
                         </div>
                     </div>
                     {include file="public/quesOp" /}

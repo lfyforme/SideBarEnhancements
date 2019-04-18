@@ -11,216 +11,237 @@
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
-<div class="editor_main" style="margin-top: -104px;margin-left:250px;background-color: white;width:950px">
+<body style="background-color: #fafafa">
+<div class="editor_main" style="margin-top: 144px;margin-left:200px;width:950px;background-color: white">
     <div class="survey_page"></div>
-
     <div class="survey_main">
+        <input type="hidden" value="{$sur.surId}" id="surId">
         <form action="">
-            <div class="survey_title"
-                 style="margin-right: 90px;margin-top:20px;padding: 9px 10px;width: 100%;">
+            <div class="survey_title" style="margin-right: 90px;margin-top:20px;padding: 9px 10px;width: 100%;">
                 <a class="title_content" style="padding: 10px 0;margin: 0 145px;">
-                    <span type="text" contenteditable="true" id="title"
+                    <input type="text" contenteditable="true" onblur="saveTitle('{:url('index/survey/saveTitle')}')"
+                           id="title"
                            style=" border:none;text-align: center;width: 710px;line-height: 25px;font-size: 24px;color: rgb(51, 51, 51)"
-                           value="">
-                        {$surInfo.surName}
-                    </span>
+                           value="{$sur.surName}">
                 </a>
             </div>
         </form>
 
-        <div class="survey_desc" style="margin-left: -20px;margin-right: 90px;margin-top:20px;">
+        <div class="survey_desc" style="margin-left: -20px;margin-right: 90px;margin-top:20px;padding: 9px 10px">
             <form action="">
                 <div class="layui-form-item layui-form-text">
                     <div class="layui-input-block">
-                    <span placeholder="请输入内容" id="desc" contenteditable="true"
-                              class="layui-textarea" id="length"
-                              style="resize:none;overflow:hidden;font-size: 20px;border:1px">{$surInfo.surDesc}</span>
+                        <textarea placeholder="请输入内容" onblur="saveDesc('{:url(" index/survey/saveDesc")}')" id="desc"
+                        contenteditable="true"
+                        class="layui-textarea" id="length"
+                        style="resize:none;overflow:hidden;font-size: 20px;border:1px"
+                        oninput="checked(this.value)" onchange="borderSet(this.value)">{$sur.surDesc}</textarea>
                     </div>
                 </div>
             </form>
         </div>
-        <div >
-            {volist name="surInfo.question" id="vo"}
-            {if $vo.quesType == "单选题"}
-            <div >
-            <input type="hidden" name="quesId" value="{$vo.quesId}">
-            <div style="padding-bottom: 10px;margin-top:20px">
-                <span style="margin-left: 5px">{$vo.quesTitle}</span> {if $vo.quesReq == 1}<span style="color: red">*</span></div>
-            <div style="margin-left: 10px">{$vo.quesDesc}</div>
-
-            {/if}
-        </div>
-
-        <ul>
-            {volist name="vo.answer" id="vo2"}
-            <li><input type="radio" name="sex" title="男" style="margin-left: 10px;margin-top: 20px">{$vo2.answer}</li>
-            {/volist}
-        </ul>
-    </div>
-    {/if}
-    {if $vo.quesType == "多选题"}
-    <div >
-    <input type="hidden" name="quesId" value="{$vo.quesId}">
-    <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>{if $vo.quesReq == 0}<span style="color: red">*</span></div>
-    <div style="margin-left: 10px">{$vo.quesDesc}</div>
-
-    {/if}
-    <ul>
-        {volist name="vo.answer" id="vo2"}
-        <li><input type="checkbox" name="sex" title="男"  style="margin-left: 10px;margin-top: 20px">{$vo2.answer}</li>
-        {/volist}
-    </ul>
-    </div>
-    {/if}
-        {if $vo.quesType == "矩形单选题"}
-        <div id="ques{$vo.quesId}">
-            <div  style="width:950px;margin-left:-100px;padding-left:100px">
-            <div style="width: 745px">
-                <input type="hidden" name="quesId" value="{$vo.quesId}">
-                <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
-                    {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+        <form class="layui-form" action="">
+            <div style="margin-left: 115px;margin-right: 90px;">
+                {volist name="sur.question" id="vo"}
+                <!--<?php $key = $key + 1 ?>-->
+                <span style="float: left">{$key}.</span>
+                {if $vo.quesType == "单选题"}
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px;">
+                        <div style="width: 745px">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px">
+                                <span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 1}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px;margin-bottom: 5px">{$vo.quesDesc}</div>
+                            <ul>
+                                {volist name="vo.answer" id="vo2"}
+                                <li><input type="radio" style="margin-left: 10px;margin-right: 10px;margin-top: 20px"
+                                           title="{$vo2.answer}"></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin-left: 10px">{$vo.quesDesc}</div>
-                <table class="layui-table" lay-skin="line" style="border: none">
-                    <colgroup>
-                        <col width="150">
-                        {volist name="vo.inner" id="vo2"}
-                        <col width="200">
-                        {/volist}
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        {volist name="vo.inner" id="vo2"}
-                        <th style="text-align: center">{$vo2.quesInner}</th>
-                        {/volist}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {volist name="vo.answer" id="vo2"}
-                    <tr>
-                        <th style="text-align: center">{$vo2.answer}</th>
-                        {volist name="vo.inner" id="vo2"}
-                        <th style="text-align: center"><input type="radio" style="margin-left: 10px;margin-right: 10px;margin-top: 20px"></th>
-                        {/volist}
-                    </tr>
-                    {/volist}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                {/if}
+                {if $vo.quesType == "多选题"}
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
+                        <div style="width: 745px">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px;margin-bottom: 10px">{$vo.quesDesc}</div>
 
-    </div>
-    {/if}
-    {if $vo.quesType == "矩形多选题"}
-    <div id="ques{$vo.quesId}">
-        <div  style="width:950px;margin-left:-100px;padding-left:100px">
-        <div style="width: 745px">
-            <input type="hidden" name="quesId" value="{$vo.quesId}">
-            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
-                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
-            </div>
-            <div style="margin-left: 10px">{$vo.quesDesc}</div>
-            <table class="layui-table" lay-skin="line" style="border: none">
-                <colgroup>
-                    <col width="150">
-                    {volist name="vo.inner" id="vo2"}
-                    <col width="200">
-                    {/volist}
-                </colgroup>
-                <thead>
-                <tr>
-                    <th></th>
-                    {volist name="vo.inner" id="vo2"}
-                    <th style="text-align: center">{$vo2.quesInner}</th>
-                    {/volist}
-                </tr>
-                </thead>
-                <tbody>
-                {volist name="vo.answer" id="vo2"}
-                <tr>
-                    <th style="text-align: center">{$vo2.answer}</th>
-                    {volist name="vo.inner" id="vo2"}
-                    <th style="text-align: center"><input type="checkbox" style="margin-left: 10px;margin-right: 10px;margin-top: 20px"></th>
-                    {/volist}
-                </tr>
+                            <ul>
+                                {volist name="vo.answer" id="vo2"}
+                                <li style="margin-top: 8px"><input type="checkbox" lay-skin="primary"
+                                                                   title="{$vo2.answer}"></li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {if $vo.quesType == "矩形单选题"}
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
+                        <div style="width: 745px">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px">{$vo.quesDesc}</div>
+                            <table class="layui-table" lay-skin="line" style="border: none">
+                                <colgroup>
+                                    <col width="150">
+                                    {volist name="vo.inner" id="vo2"}
+                                    <col width="200">
+                                    {/volist}
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    {volist name="vo.inner" id="vo2"}
+                                    <th style="text-align: center">{$vo2.quesInner}</th>
+                                    {/volist}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="vo.answer" id="vo2"}
+                                <tr>
+                                    <th style="text-align: center">{$vo2.answer}</th>
+                                    {volist name="vo.inner" id="vo2"}
+                                    <th style="text-align: center"><input type="radio"></th>
+                                    {/volist}
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {if $vo.quesType == "矩形多选题"}
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
+                        <div style="width: 745px">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px">{$vo.quesDesc}</div>
+                            <table class="layui-table" lay-skin="line" style="border: none">
+                                <colgroup>
+                                    <col width="150">
+                                    {volist name="vo.inner" id="vo2"}
+                                    <col width="200">
+                                    {/volist}
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    {volist name="vo.inner" id="vo2"}
+                                    <th style="text-align: center">{$vo2.quesInner}</th>
+                                    {/volist}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="vo.answer" id="vo2"}
+                                <tr>
+                                    <th style="text-align: center">{$vo2.answer}</th>
+                                    {volist name="vo.inner" id="vo2"}
+                                    <th style="text-align: center"><input type="checkbox" lay-skin="primary"></th>
+                                    {/volist}
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {if $vo.quesType == "下拉题"}
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
+                        <div style="width: 745px">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px;"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px;height: 25px;padding-bottom: 10px">{$vo.quesDesc}</div>
+                            <select name="answer" id="answer" style="!important;width: 150px" class="layui-inline">
+                                <option value="">请选择</option>
+                                {volist name="vo.answer" id="vo2"}
+                                <option value="{$vo2.answer}" style="margin-right: 10px;">{$vo2.answer}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {if $vo.quesType == "排序题"}
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
+                        <div style="width: 745px">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px;margin-bottom: 10px">{$vo.quesDesc}</div>
+                            <ul>
+                                {volist name="vo.answer" id="vo2"}
+                                <li><input type="checkbox" lay-skin="primary">
+                                    {$vo2.answer}
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {if $vo.quesType == "量标题"}
+                <?php $vo2 = $vo['scale'] ?>
+                <div id="ques{$vo.quesId}">
+                    <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
+                        <div style="width: 745px">
+                            <input type="hidden" id="scale{$vo2.scaleId}" value="{$vo2.scaleId}">
+                            <input type="hidden" id="scale{$vo2.scaleRange}" value="{$vo2.scaleRange}">
+                            <input type="hidden" name="quesId" value="{$vo.quesId}">
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                            </div>
+                            <div style="margin-left: 10px">{$vo.quesDesc}</div>
+
+                            <input type="hidden" value="">
+                            <div class="option">
+                                <span>
+                                <span style="color: gray;font-size: 14px;padding-right: 10px;padding-top: 25px">非常不满意</span>
+                                    <?php $scaleRange = $vo2['scaleRange'] + 1; ?>
+                                    {for start="1" end="$scaleRange"}
+                                    <input type="radio" name="" title="{$i}">
+                                {/for}
+                                <span style="color: gray;font-size: 14px">非常满意</span>
+                                </span></div>
+                        </div>
+                    </div>
+
+                </div>
+                {/if}
                 {/volist}
-                </tbody>
-            </table>
-        </div>
+            </div>
+        </form>
+
     </div>
 
-</div>
-{/if}
-{if $vo.quesType == "下拉题"}
-<div id="ques{$vo.quesId}">
-    <div  style="width:950px;margin-left:-100px;padding-left:100px">
-    <div style="width: 745px">
-        <input type="hidden" name="quesId" value="{$vo.quesId}">
-        <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
-            {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
-        </div>
-        <div style="margin-left: 10px">{$vo.quesDesc}</div>
-        <select name="answer" id="answer">
-            <option value="">请选择</option>
-            {volist name="vo.answer" id="vo2"}
-            <option value="{$vo2.answer}" style="margin-right: 10px;">{$vo2.answer}</option>
-            {/volist}
-        </select>
-    </div>
-</div>
-</div>
-{/if}
-{if $vo.quesType == "排序题"}
-<div id="ques{$vo.quesId}">
-    <div  style="width:950px;margin-left:-100px;padding-left:100px">
-    <div style="width: 745px">
-        <input type="hidden" name="quesId" value="{$vo.quesId}">
-        <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
-            {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
-        </div>
-        <div style="margin-left: 10px">{$vo.quesDesc}</div>
-        <ul>
-            {volist name="vo.answer" id="vo2"}
-            <li><span style="width: 18px;height: 18px;display: inline-block;vertical-align: middle;
-                                    margin-right: 10px;background: #e2e2e2;border: 2px solid #e2e2e2;"></span>
-                {$vo2.answer}</li>
-            {/volist}
+    <div id="question_subjects">
+        <ul style="margin:10px;padding:0;">
         </ul>
     </div>
-</div>
 
 </div>
-{/if}
-{if $vo.quesType == "量标题"}
-<?php $vo2 = $vo['scale'] ?>
-<div id="ques{$vo.quesId}" >
-    <div  style="width:950px;margin-left:-100px;padding-left:100px">
-    <div style="width: 745px">
-        <input type="hidden" id="scale{$vo2.scaleId}" value="{$vo2.scaleId}">
-        <input type="hidden" id="scale{$vo2.scaleRange}" value="{$vo2.scaleRange}">
-        <input type="hidden" name="quesId" value="{$vo.quesId}">
-        <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
-            {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
-        </div>
-        <div style="margin-left: 10px">{$vo.quesDesc}</div>
-
-        <input type="hidden" value="">
-        <div class="option"><span> <span style="color: gray;font-size: 12px;padding-right: 10px">非常不满意</span>
-            <?php $scaleRange = $vo2['scaleRange'] + 1; ?>
-            {for start="1" end="$scaleRange"}
-                                    {$i}<input type="radio" name="">
-                                {/for}
-                                <span style="color: gray;font-size: 12px">非常满意</span></span></div>
-    </div>
-</div>
-
-</div>
-{/if}
-{/volist}
-</div>
-
 </body>
 {include file="public/_baseJs" /}
 <script src="/static/lib/easyui/jquery.easyui.min.js"></script>
