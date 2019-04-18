@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script src="/static/layui/layui.js"></script>
+
+</head>
+<body style="overflow: hidden">
+{include file="public/_firstTitle" /}
+<div id="secondHeader">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-menu collapse navbar-collapse" style="margin-left: -110px">
+                <ul class="nav navbar-nav navbar-left">
+                    <li style="margin-left: 25px;">
+                        <a href="{:url('index/question/create')}" id="" class="navbar-link" style="color: #2f8cdb;">编辑</a><span>|</span></li>
+                    <li><a href="#" onclick="layer_show('投放问卷','{:url("index/index/share")}','379','311')" id="1" class="navbar-link">投放</a><span>|</span></li>
+                    <li><a href="{:url('index/Statistics/dataView')}" id="2" class="navbar-link">统计</a><span>|</span>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="margin-right: -110px">
+                    <li>
+                        <label for="edit" class="control-label no-padding-right" style="padding-top: 18px;"><i
+                                class="Hui-iconfont">&#xe687;</i></label>
+                        <a href="{:url('index/question/create')}" id="edit">高级编辑</a>
+                    </li>
+                    <li>
+                        <label for="setting" class="control-label no-padding-right" style="padding-top: 18px;"><i
+                                class="Hui-iconfont">&#xe61d;</i></label>
+                        <a href="#" id="setting" onclick="layer_show('设置','{:url("index/index/share")}','640','520')">设置</a>
+                    </li>
+                    <!--<i class="Hui-iconfont">&#xe61d;</i>-->
+                    <li>
+                        <label for="view" class="control-label no-padding-right" style="padding-top: 18px;"><i
+                                class="Hui-iconfont">&#xe725;</i></label>
+                        <a href="#" id="view">预览</a>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary"><i class="Hui-iconfont">&#xe6e6;</i>开始回收</button>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+</div>
+<div id="editContainer">
+    <div>
+        <div id="edit_t">
+            <div class="header">
+                <span contenteditable="true">示例--问卷调研用户使用习惯调查</span>
+            </div>
+            <br>
+            <div class="edit-item"><span contenteditable="true">请问您最常用的创建问卷方式是？[单选题]</span></div>
+            <div class="edit-item"><span contenteditable="true" onblur="alert('sada')">从空白问卷开始创建</span></div>
+            <div class="edit-item"><span contenteditable="true">使用已有的问卷模板</span></div>
+            <div class="edit-item"><span contenteditable="true">使用导入功能自动创建</span></div>
+            <br>
+            <div class="edit-item"><span contenteditable="true">以下特性中，您认为比较重要的是？[多选题]</span></div>
+            <div class="edit-item"><span contenteditable="true">创建方式多样</span></div>
+            <div class="edit-item"><span contenteditable="true">免费好用</span></div>
+            <div class="edit-item"><span contenteditable="true">在线实时统计</span></div>
+            <div class="edit-item"><span contenteditable="true">多终端自动适应显示</span></div>
+            <br>
+            <div class="edit-item"><span contenteditable="true"> 请您用一句话评价下问卷平台[单行文本题]</span></div>
+            <br>
+            <div class="edit-item"><span contenteditable="true">  请为问卷平台评一下分[量表题]</span></div>
+            <div class="edit-item"><span contenteditable="true"> 1～5</span></div>
+            <div class="edit-item"><span contenteditable="true">  请为问卷平台评一下分[量表题]</span></div>
+            <div class="edit-item"><span contenteditable="true"> 1～5</span></div>
+        </div>
+        <div id="bottom-edit">
+            <a href="" class="Hui-iconfont" style="position: absolute;left:10px;font-size: 14px;
+	top:12px;">&#xe641;导出文档</a>
+            <a href="" class="view" onclick="layer_show('示例','{:url("index/index/share")}','379','311')" >查看编辑示例</a>
+        </div>
+    </div>
+
+    <div id="editorOutput" style="overflow: auto">
+        <div id="output">
+            <div class="header">
+                <sapn>示例--问卷调研用户使用习惯调查</sapn>
+            </div>
+            <div class="question_radio">
+                <div class="edit-item"><span>1.请问您最常用的创建问卷方式是？[单选题]</span></div>
+                <div class="description"></div>
+                <div class="options">
+                    <p class="option"><input type="radio" checked="checked" name="way" value="empty" />
+                        从空白问卷开始创建</p>
+                    <br/>
+                    <p class="option">
+                        <input type="radio" name="way" value="own" />
+                        使用已有的问卷模板
+                    </p>
+
+                    <br/>
+                    <p class="option">
+                        <input type="radio" name="way" value="own" />
+                        使用已有的问卷模板
+                    </p>
+
+                </div>
+
+            </div>
+            <br>
+            <div class="question_checkbox">
+                <div class="edit-item"><span>2.以下特性中，您认为比较重要的是？</span></div>
+                <div class="description"></div>
+                <div class="options">
+                    <p class="option"><input type="checkbox" name="category" value="创建方式多样"/>创建方式多样 </p>
+                    <p class="option"><input type="checkbox" name="category" value="免费好用"/>免费好用</p>
+                    <p class="option"><input type="checkbox" name="category" value="在线实时统计"/>在线实时统计</p>
+                    <p class="option"><input type="checkbox" name="category" value="多终端自动适应显示"/>多终端自动适应显示</p>
+                </div>
+
+            </div>
+            <div class="question_star">
+                <div class="edit-item"><span> 4. 请为问卷平台评一下分</span></div>
+                <div class="description"></div>
+                <div class="option"><span> <span style="color: gray;font-size: 12px;padding-right: 10px">非常不满意</span><div id="test1"></div>
+                    <span style="color: gray;font-size: 12px">非常满意</span></span></div>
+            </div>
+            <div class="question_text">
+                <div class="edit-item"><span> 3.请您用一句话评价下问卷平台</span></div>
+                <div class="description"></div>
+                <input type="text" name="title" placeholder="请输入标题" class="layui-input" >
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+
+{include file="public/listJs" /}
+
+<script>
+    layui.use('rate', function(){
+        var rate = layui.rate;
+
+        //渲染
+        var ins1 = rate.render({
+            elem: '#test1' ,//绑定元素
+            length:5
+        });
+    });
+</script>
+</html>

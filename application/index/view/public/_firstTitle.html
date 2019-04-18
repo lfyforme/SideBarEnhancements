@@ -1,0 +1,65 @@
+<div id="firstHeader">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header" style="margin-left: 5px;margin-right: 25px;">
+                <a href="{:url('index/index/Base')}" class="navbar-brand"><i class="Hui-iconfont"
+                     tyle="color: cornflowerblue;font-size: 40px;">&#xe6c1;</i>调查问卷</a>
+            </div>
+            <input type="hidden" value="{:session('user.username')}" id="ID">
+            <div class="navbar-menu collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li style="font-size: 17px;padding-top: 5px;margin-left: 25px;margin-right: 15px"><a href="#"
+                                                                                                         id="createQ"
+                                                                                                         class="navbar-link"
+                                                                                                         style="outline: none;"><i
+                            class="Hui-iconfont">&#xe72d;</i>创建问卷</a></li>
+                    <li style="font-size: 17px;padding-top: 5px;margin-left: 15px;margin-right: 15px"><a href="#"
+                                                                                                         id="home"
+                                                                                                         class="navbar-link"
+                                                                                                         style="outline: none;"><i
+                            class="Hui-iconfont">&#xe625;</i>我的问卷</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="margin-right: -130px">
+                    <li role="presentation" class="dropdown" style="font-size: 17px;padding-top: 5px;margin-left: 15px;margin-right: 15px">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            反馈信息 <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" >
+                            <li><a href="#" onclick="layer_show('反馈列表','{:url("index/Feedback/feedList")}','1059','611')">反馈列表</a></li>
+                            <li><a href="#" onclick="layer_show('开始反馈','{:url("index/Feedback/feedback")}','759','411')">反馈</a></li>
+                        </ul>
+                    </li>
+                    {if session('?user.username')}
+                    <li style="font-size: 17px;padding-top:8px;margin-left: 35px;margin-right: 15px"><a href="#"
+                                onclick="layer_show('个人信息','{:url("index/index/personInfomation")}','479','231')"class="navbar-link"
+                                                                                                         style="outline: none;padding:10px">
+                        <img src="/{:session('user.user_logo')}" style="width: 30px;height: 30px;border-radius: 50%;margin: 0" alt="">{:session('user.nickname')}</a>
+                    </li>
+                    <li style="font-size: 17px;padding-top: 5px;margin-left: 25px;margin-right: 15px"><a href="#"
+                                                                                                         id="loginout"
+                                                                                                         class="navbar-link"
+                                                                                                         style="outline: none;">退出</a>
+                    </li>
+                    {else /}
+                    <li style="font-size: 17px;padding-top: 5px;margin-left: 15px;margin-right: 15px"><a
+                            href="{:url('index/index/login')}" class="navbar-link" style="outline: none;">登录</a></li>
+                    <li style="font-size: 17px;padding-top: 5px;margin-left: 15px;margin-right: 15px"><a
+                            href="{:url('index/index/register')}" style="outline: none;">注册</a></li>
+                    {/if}
+                </ul>
+                <form action="{:url('index/index/search')}" class="navbar-form navbar-right"
+                      style="padding-top: 5px;margin-right: 15px;margin-left: -15px">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for..." style="width: 190px">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </nav>
+</div>

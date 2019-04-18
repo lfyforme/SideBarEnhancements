@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body >
+{include file="public/_firstTitle" /}
+{include file="public/_secondTitle" /}
+{include file="public/_leftMenu" /}
+<div style="background-color:#f7f7f7;" id="recycle_main">
+    <div style="position: relative;left:180px;top:150px;background-color: white;width:1136px;padding: 20px">
+        <div >
+            <div >
+                <span style="font-size: 20px;color: #333333">题目</span>
+                <span style="font-size:14px;color: #999999">ID:3224456</span>
+                <i class="layui-icon" style="position:relative;font-size: 24px;left: 690px;border: 1px solid grey;padding: 4px">&#xe9aa;</i>
+                <i class="layui-icon" style="position:relative;font-size: 24px;left: 710px;border: 1px solid grey;padding: 4px">&#xe640;</i>
+                <select name="city" lay-verify="" style="position:relative;left:730px;border-radius: 7px;padding: 8px 20px;">
+                    <option value="">请选择一个城市</option>
+                    <option value="010">北京</option>
+                    <option value="021">上海</option>
+                    <option value="0571">杭州</option>
+                </select>
+            </div>
+            <div style="margin-top: 20px"><span style="font-size: 16px;float: left;margin-top: 10px;margin-right: 15px">选择时间</span></div>
+            <div class="layui-inline" style="float: left">
+                <input type="text" class="layui-input Time" id="lasttime" value="1999-02-20">
+                <i class="layui-icon"  style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
+            </div>
+            <div><span style="font-size: 16px;float: left;margin-top: 10px;margin-right: 10px;margin-left: 10px">至</span></div>
+            <div class="layui-inline">
+                <input type="text" class="layui-input Time" id="finaltime" value="1999-02-20">
+                <i class="layui-icon" style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
+            </div>
+        </div>
+        <div>
+            <table class="layui-table" lay-size="lg" lay-skin="line" style="width:100%;margin-left: 02px;margin-top: 20px">
+                <colgroup>
+                    <col >
+                    <col >
+                    <col >
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>选项</th>
+                    <th>小计</th>
+                    <th>百分比</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>选项1</td>
+                    <td>12</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>选项2</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="subject1">
+            <div class="layui-tab layui-tab-card" lay-filter="test">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">饼状图</li>
+                    <li>柱状图</li>
+                    <li>条形图</li>
+                    <li>折线图</li>
+                </ul>
+                <div class="layui-tab-content" style="height: 100px;">
+                    <div class="layui-tab-item layui-show" id="12" style="height:300px;width:300px">1</div>
+                    <div class="layui-tab-item" id="121" style="height:300px;width:300px">2</div>
+                    <div class="layui-tab-item">3</div>
+                    <div class="layui-tab-item">4</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="/static/lib/echarts.js"></script>
+{include file="public/_basejs" /}
+<script src="/static/lib/layer/layer.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#lasttime'//指定元素
+        });
+
+        var laydate2 = layui.laydate;
+        laydate2.render({
+            elem: '#finaltime'//指定元素
+        });
+    });
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //一些事件监听
+        element.on('tab(demo)', function(data){
+            // console.log(this); //当前Tab标题所在的原始DOM元素
+            // console.log(data.index); //得到当前Tab的所在下标
+            // console.log(data.elem); //得到当前的Tab大容器
+        });
+    });
+
+   var subject1 = echarts.init(document.getElementById('12'));
+    option = {
+        legend: {
+            orient:'vertical',
+            left: 'left',
+            data:['选项1','选项2']
+        },
+        series:[
+            {
+                name:'选项',
+                type:'pie',
+                radius:'55%',
+                center:['50%','50%'],
+                data:[
+                    {value:12,name:'选项1'},
+                    {value:12,name:'选项2'},
+                ]
+            }
+        ]
+    };
+    subject1.setOption(option);
+    var subject2 = echarts.init(document.getElementById('121'));
+    option = {
+        legend: {
+            orient:'vertical',
+            left: 'left',
+            data:['选项112','选项2']
+        },
+        series:[
+            {
+                name:'选项',
+                type:'pie',
+                radius:'55%',
+                center:['50%','50%'],
+                data:[
+                    {value:12,name:'选项112'},
+                    {value:12,name:'选项2'},
+                ]
+            }
+        ]
+    };
+    subject2.setOption(option);
+</script>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body style="overflow-y: hidden">
+{include file="public/_firstTitle" /}
+{include file="public/_secondTitle" /}
+{include file="public/_leftMenu" /}
+<div id="viewContent" style="position: relative;top:150px;left:50px;bottom: 0px;width:1080px;background-color: gray();height: 750px;overflow-y: hidden">
+    <div class="view-main">
+        <div class="header">
+            <h2 style="color:dodgerblue">标题</h2>
+            <span>回收量{$ip.data}</span>
+        </div>
+        <div id="amount" style="height: 390px;width:698px;"></div>
+        <div id="area" style="height: 520px;width:490px;position: relative;left:640px;top:-410px;right:0px;bottom: 0px"></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+</div>
+</body>
+<script src="/static/lib/echarts.js"></script>
+{include file="public/_basejs" /}
+<script src="/static/lib/china.js"></script>
+<script>
+    var amount = echarts.init(document.getElementById('amount'));
+    amount.showLoading();
+    $.get("/static/data.json").done(function (data) {
+        amount.hideLoading();
+        amount.setOption({
+            title:{
+                text:"回收量"
+            },
+            tooltip:{},
+            legend:{
+                data:['访问量']
+            },
+            xAxis:{
+                data:data.name,
+            },
+            yAxis:{},
+            series:[{
+                name:'访问量',
+                // symbol:'none',
+                smooth:true,
+                color:['dodgerblue'],
+                areaStyle: {color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: 'lightskyblue' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: 'white' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    }},
+                type:'line',
+                data:data.data
+            }]
+        })
+    });
+
+    function randomData() {
+        return Math.round(Math.random()*1000);
+    }
+
+    var area = echarts.init(document.getElementById('area'));
+    option = {
+        title: {
+            text: '地域位置',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            left: 'left',
+            data:['iphone3']
+        },
+        toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+                dataView: {readOnly: false},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: 'iphone3',
+                type: 'map',
+                mapType: 'china',
+                roam: false,
+                label: {
+                    normal: {
+                        show: true
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data:[
+                    {name: '北京',value: randomData() },
+                    {name: '天津',value: randomData() },
+                    {name: '上海',value: randomData() },
+                    {name: '重庆',value: randomData() },
+                    {name: '河北',value: randomData() },
+                    {name: '河南',value: randomData() },
+                    {name: '云南',value: randomData() },
+                    {name: '辽宁',value: randomData() },
+                    {name: '黑龙江',value: randomData() },
+                    {name: '湖南',value: randomData() },
+                    {name: '安徽',value: randomData() },
+                    {name: '山东',value: randomData() },
+                    {name: '新疆',value: randomData() },
+                    {name: '江苏',value: randomData() },
+                    {name: '浙江',value: randomData() },
+                    {name: '江西',value: randomData() },
+                    {name: '湖北',value: randomData() },
+                    {name: '广西',value: randomData() },
+                    {name: '甘肃',value: randomData() },
+                    {name: '山西',value: randomData() },
+                    {name: '内蒙古',value: randomData() },
+                    {name: '陕西',value: randomData() },
+                    {name: '吉林',value: randomData() },
+                    {name: '福建',value: randomData() },
+                    {name: '贵州',value: randomData() },
+                    {name: '广东',value: randomData() },
+                    {name: '青海',value: randomData() },
+                    {name: '西藏',value: randomData() },
+                    {name: '四川',value: randomData() },
+                    {name: '宁夏',value: randomData() },
+                    {name: '海南',value: randomData() },
+                    {name: '台湾',value: randomData() },
+                    {name: '香港',value: randomData() },
+                    {name: '澳门',value: randomData() }
+                ]
+            },
+        ]
+    };
+    area.setOption(option);
+</script>
+</html>

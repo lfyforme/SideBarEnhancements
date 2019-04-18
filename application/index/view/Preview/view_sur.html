@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="editor_main" style="margin-top: -104px;margin-left:250px;background-color: white;width:950px">
+    <div class="survey_page"></div>
+
+    <div class="survey_main">
+        <form action="">
+            <div class="survey_title"
+                 style="margin-right: 90px;margin-top:20px;padding: 9px 10px;width: 100%;">
+                <a class="title_content" style="padding: 10px 0;margin: 0 145px;">
+                    <span type="text" contenteditable="true" id="title"
+                           style=" border:none;text-align: center;width: 710px;line-height: 25px;font-size: 24px;color: rgb(51, 51, 51)"
+                           value="">
+                        {$samInfo.samName}
+                    </span>
+                </a>
+            </div>
+        </form>
+
+        <div class="survey_desc" style="margin-left: -20px;margin-right: 90px;margin-top:20px;">
+            <form action="">
+                <div class="layui-form-item layui-form-text">
+                    <div class="layui-input-block">
+                    <span placeholder="请输入内容" id="desc" contenteditable="true"
+                              class="layui-textarea" id="length"
+                              style="resize:none;overflow:hidden;font-size: 20px;border:1px">{$samInfo.samDesc}</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div >
+            {volist name="samInfo.question" id="vo"}
+            {if $vo.quesType == "单选题"}
+            <div >
+            <input type="hidden" name="quesId" value="{$vo.quesId}">
+            <div style="padding-bottom: 10px;margin-top:20px">
+                <span style="margin-left: 5px">{$vo.quesTitle}</span> {if $vo.quesReq == 1}<span style="color: red">*</span></div>
+            <div style="margin-left: 10px">{$vo.quesDesc}</div>
+
+            {/if}
+        </div>
+
+        <ul>
+            {volist name="vo.answer" id="vo2"}
+            <li><input type="radio" name="sex" title="男" style="margin-left: 10px;margin-top: 20px">{$vo2.answer}</li>
+            {/volist}
+        </ul>
+    </div>
+    {/if}
+    {if $vo.quesType == "多选题"}
+    <div >
+    <input type="hidden" name="quesId" value="{$vo.quesId}">
+    <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>{if $vo.quesReq == 0}<span style="color: red">*</span></div>
+    <div style="margin-left: 10px">{$vo.quesDesc}</div>
+
+    {/if}
+    <ul>
+        {volist name="vo.answer" id="vo2"}
+        <li><input type="checkbox" name="sex" title="男"  style="margin-left: 10px;margin-top: 20px">{$vo2.answer}</li>
+        {/volist}
+    </ul>
+</div>
+{/if}
+{/volist}
+</div>
+
+</body>
+{include file="public/_baseJs" /}
+<script src="/static/lib/easyui/jquery.easyui.min.js"></script>
+<style type="text/css">
+    .drag-item {
+        list-style-type: none;
+        display: block;
+        padding: 25px;
+        border: 1px solid #ccc;
+        margin: 2px;
+        background: #fafafa;
+        color: #444;
+    }
+
+    .indicator {
+        position: absolute;
+        font-size: 9px;
+        width: 10px;
+        height: 10px;
+        display: none;
+        color: red;
+    }
+</style>
+<script src="/static/index/js/create.js"></script>
+</html>

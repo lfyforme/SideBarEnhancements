@@ -1,0 +1,35 @@
+{include file="public/questionHead" /}
+<body onload="set_select_checked('question_type','量标题')">
+<li class="drag-item" value="" style="padding-left: 112px;padding-right: 70px">
+    <div class="survey_subject">
+        {include file="public/questionCom" /}
+        <?php $vo2 = $ques['scale'] ?>
+        <div class="inputs">
+            <input type="hidden" id="scaleId" value="{$vo2.scale|default=0}">
+            <label style="font-size: 14px;font-weight: 400">量表类型
+                <select name="scale_type" lay-verify="" id="scale_type" style="margin: 0 20px 0 10px;line-height: 21px">
+                    <option value="满意度" selected>满意度</option>
+                    <option value="认同度">认同度</option>
+                    <option value="重要度">重要度</option>
+                    <option value="愿意度">愿意度</option>
+                    <option value="符合度">符合度</option>
+                </select></label>
+            <label style="font-size: 14px;font-weight: 400">量表范围
+                <input type="text" value="{$vo2.scaleRange|default=5}" id="scaleRange"style="margin: 0 20px 0 10px;padding: 1px 0 1px 10px;width: 70px;line-height: 21px"></label>
+            <label style="font-size: 14px;font-weight: 400">起始数值
+                <input type="text" value="{$vo2.scaleStart|default=1}" id="scaleStart" style="margin: 0 20px 0 10px;padding: 1px 0 1px 10px;width: 70px;line-height: 21px"></label>
+            <div class="question_btn">
+                <button class="layui-btn layui-btn-primary" type="button" onclick='cancelInfo(this)'>
+                    取消
+                </button>
+
+                <button type="button" style="text-decoration: none" class="layui-btn layui-btn-normal"
+                        onclick='saveInfo(this,{$surId},"{:url('index/question/saveInfo')}","1","0")'>确定
+                </button>
+            </div>
+        </div>
+    </div>
+</li>
+</body>
+<script src="/static/index/js/create_ques.js"></script>
+</html>

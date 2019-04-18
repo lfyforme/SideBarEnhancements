@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/index/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/index/js/bootstrap.min.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <input type="hidden" value="{$surId}" id="surId">
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 100px">时间设置</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="switch" lay-skin="switch" lay-filter="time">
+        </div>
+    </div>
+    <div style="display: none;" id="time">
+        <div class="layui-form-item" style="margin-left: 30px;margin-top: -90px">
+            <div style="margin-bottom: 50px">
+                <input type="checkbox" name="" style="margin-top: 30px;" title="开始时间" lay-skin="primary"
+                       lay-filter="time_start">
+            </div>
+            <div class="layui-inline" style="padding-top: 30px;display: none" id="time_start">
+                <input type="text" class="layui-input" id="startTime" value="326565454565">
+                <i class="layui-icon" style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: 30px;margin-top: -50px;">
+            <div style="margin-top: 30px">
+                <input type="checkbox" name="" title="结束时间" lay-skin="primary" lay-filter="time_end">
+            </div>
+            <div class="layui-inline" style="padding-top: 30px;display: none" id="time_end">
+                <input type="text" class="layui-input" id="finaltime" value="9865656465">
+                <i class="layui-icon" style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: -40px">
+        <div class="layui-form-item" style="margin-left: 30px">
+            <input type="checkbox" name="" title="答题需要登录验证" id="login"
+                   value="{:url('index/surset/setLogin')}" lay-filter="login" lay-skin="primary">
+        </div>
+        <div class="layui-form-item" style="margin-left: 30px">
+            <input type="checkbox" name="" title="每个用户只能回答一次" lay-filter="count" lay-skin="primary">
+
+        </div>
+    </div>
+    <div>
+        <button onclick="submitF('{:url(" index
+        /surset/")}')">确认</button>
+    </div>
+</form>
+</body>
+<script src="/static/index/js/set.js"></script>
+</html>

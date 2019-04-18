@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script src="/static/admin/js/skins.min.js"></script>
+    <!--Basic Scripts-->
+    <script src="/static/admin/js/jquery.min.js"></script>
+    <script src="/static/admin/js/bootstrap.min.js"></script>
+    <script src="/static/admin/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <!--Beyond Scripts-->
+    <script src="/static/admin/js/beyond.js"></script>
+    <script src="/static/layui/layui.js"></script>
+</head>
+<body style="overflow-y: hidden">
+<div style="padding:20px;overflow-y: hidden">
+    <div class="page-content">
+        <!-- /Page Breadcrumb -->
+        <!-- Page Body -->
+        <div class="page-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="widget radius-bordered">
+
+                        <div class="widget-body">
+                            <form action="" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="fBTopic" class="control-label col-sm-2 no-padding-left">反馈名称</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" id="fBTopic" name="fBTopic" class="form-control"value="{$feedInfo.fBTopic}" disabled></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fBContent" class="control-label col-sm-2 no-padding-left">反馈内容</label>
+                                    <div class="col-sm-6">
+                                        <input id="fBContent" type="text" class="form-control"  name="fBContent"value="{$feedInfo.fBContent}" disabled> </input>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Body -->
+    </div>
+
+</div>
+</body>
+</html>

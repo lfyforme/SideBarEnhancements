@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>问卷调查系统</title>
+    <link rel="shortcut icon" href="/static/admin/img/logo.jpg" type="image/x-icon">
+    <link href="/static/admin/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/admin/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/static/admin/css/weather-icons.min.css" rel="stylesheet"/>
+    <link id="beyond-link" href="/static/admin/css/beyond.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body>
+<div class="login-container" >
+    <div class="loginbox bg-white">
+        <form>
+            <div class="loginbox-title">登录</div>
+
+            <div class="loginbox-or">
+                <div class="or-line"></div>
+            </div>
+            <div class="loginbox-textbox">
+                <input type="text" class="form-control" placeholder="用户名" name="username" id="user" value="{$username}"/>
+            </div>
+            <div class="loginbox-textbox">
+                <input type="password" class="form-control" placeholder="密码" name="password" value="{$password }"/>
+                <input type="hidden" name="is_rem" value="{if condition='!empty($password) eq true'}1{else/}0{/if}"
+                       id="is_rem">
+            </div>
+            <div class="loginbox-textbox">
+                    <input type="text" class="form-control" id="verify" name="verify" placeholder="验证码" style="float: left;width: 105px"/>
+                    <span class="form-control" style="padding: 0;"><img src="{:captcha_src()}" alt=""
+                        onclick="this.src='{:captcha_src()}'" style="height: 50px;width:110px"></span>
+            </div>
+            <div class="form-group">
+                <label for="online" style="cursor:pointer;margin-left: 30px">
+                    <input type="checkbox" name="rempsw" id="online" checked>
+                    记住账号密码</label>
+            </div>
+            <div class="loginbox-submit" style="margin-top: -20px">
+                <input type="button" class="btn btn-primary btn-block" id="login" onclick="ajaxUse()" value="登录">
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script src="/static/admin/js/skins.min.js"></script>
+<!--Basic Scripts-->
+<script src="/static/admin/js/jquery.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/slimscroll/jquery.slimscroll.min.js"></script>
+<!--Beyond Scripts-->
+<script src="/static/admin/js/beyond.js"></script>
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+    $(window).bind("load", function () {
+
+        /*Sets Themed Colors Based on Themes*/
+        themeprimary = getThemeColorFromCss('themeprimary');
+        themesecondary = getThemeColorFromCss('themesecondary');
+        themethirdcolor = getThemeColorFromCss('themethirdcolor');
+        themefourthcolor = getThemeColorFromCss('themefourthcolor');
+        themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+    });
+
+    function ajaxUse() {
+        $.ajax({
+            url: "{:url('admin/index/login')}",
+            type: 'POST',
+            data: $('form').serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == 1) {
+                    layer.msg(data.msg, {
+                        icon: 6,
+                        time: 2000
+                    }, function () {
+                        location.href = data.url;
+                    })
+                } else if (data.code == 0) {
+                    layer.open({
+                        title: '登录失败',
+                        content: data.msg,
+                        icon: 5,
+                        anim: 6
+                    });
+
+                }
+            },
+
+        });
+        return false;
+
+    }
+
+</script>
+</body>
+<!--  /Body -->
+</html>

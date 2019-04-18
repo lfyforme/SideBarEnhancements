@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body id="list" style="overflow-x: hidden" onload="set_select_checked('surStatus', {$surStatus})">
+{include file="public/_firstTitle" /}
+<div id="surveylist" style="">
+    <div class="header">
+        <form class="layui-form" action="">
+        <div class="createQ">
+            <button class="layui-btn layui-btn-radius layui-btn-warm" style="height: 34px ">
+                <i class="layui-icon">&#xe608;</i> 创建问卷
+            </button>
+        </div>
+        <div class="search">
+            <form action="{:url('index/survey/searchName')}" method="get" id="nameForm">
+                <input type="text" placeholder="请输入问卷名进行搜索..." name="sName" id="sName" value="{$surName}">
+            </form>
+                <!--<a href="javascript:;"  class="Hui-iconfont">&#xe709;</a>-->
+        </div>
+        <div class="status">
+            <form action="{:url('index/survey/searchStatus')}" method="get" id="statusForm">
+                <select name="surStatus" id="surStatus" lay-verify="" >
+                    <option value="4">问卷状态</option>
+                    <option value="0">草稿</option>
+                    <option value="1" >正在运行</option>
+                    <option value="2" >暂停</option>
+                </select>
+            </form>
+        </div>
+        </form>
+        <div id="recycleBin" style="margin-left: -100px">
+            <a href="{:url('index/sample/samList')}" class="layui-btn layui-btn-radius layui-btn-warm" style="height: 34px ">
+                <i class="Hui-iconfont">&#xe603;我的模板问卷</i>
+            </a>
+            <a class="layui-btn layui-btn-radius" style="height: 34px " href="{:url('index/survey/recycleSur')}">
+                <i class="Hui-iconfont">&#xe609;</i> 回收站
+            </a>
+        </div>
+    </div>
+    <div>
+        <hr style="border: 0.5px solid gray();width: 82%;margin-top: -104px;margin-left: 120px">
+    </div>
+    <div>
+
+        <table class="layui-table" lay-size="lg" lay-even lay-skin="nob" style="width:82%;margin-left: 122px;">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col width="100">
+                <col width="100">
+                <col width="200">
+                <col width="200">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>问卷</th>
+                <th>状态</th>
+                <th>操作</th>
+                <th>回收量</th>
+                <th>创建时间</th>
+                <th>发布操作</th>
+            </tr>
+            </thead>
+
+            <tbody id="tb_sur">
+            {volist name="surList" id="list"}
+            <tr id="surTr{$list.surId}" >
+                <td><input type="hidden" value="{$list.surId}" id="sur"><div class="123456" style="float: left">{$list.surName}</div><span >({$list.surId})</span></td>
+                <td class="surStatus">
+                    {if $list.surStatus==0}
+                    草稿
+                    {elseif $list.surStatus==1 /}
+                    正在运行
+                    {elseif $list.surStatus==2 /}
+                    暂停
+                    {/if}
+                </td>
+                <td><a class="Hui-iconfont" href="#" id="myDiv{$list.surId}" onmousedown="menu({$list.surId})">&#xe6f9;</a></td>
+
+                <td>0</td>
+                <td>{$list.sur_addTime}</td>
+                <td><a href="javascript:;" class="Hui-iconfont" style="color: #008fff" onclick="start(this,'{$list.surId}')"> {if $list.surStatus==0 or $list.surStatus==2 }&#xe6e6;<span id="start">发布</span></a>
+                {elseif $list.surStatus==1/}<a href="javascript:;" class="Hui-iconfont" style="color: #fa911e" onclick="stop(this,'{$list.surId}')"> &#xe6e5;<span id="stop">停止</span></a>
+                {/if}</td>
+            </tr>
+            <ul id="myMenu" style="z-index: 9999">
+                <a href="javascript:" onclick="layer_show('投放问卷','{:url("index/index/share")}','379','401')"><li>投放问卷</li></a>
+                <a href="javascript:" onclick="apply({$list.surId})"><li>申请成为模板</li></a>
+                <a href="javascript:"><li class="line">导出TXT文档</li></a>
+                <a href="javascript:"><li>统计分析</li></a>
+                <a href="javascript:"><li class="line">清空数据</li></a>
+                <a href="{:url("index/question/create",['surId'=>$list.surId])}"><li>编辑</li></a>
+                <a href="javascript:" onclick="copy({$list.surId})"><li >复制</li></a>
+                <a href="javascript:" onclick="deleteSur({$list.surId})"><li>删除</li></a>
+                <a href="javascript:;" onclick="rename()"><li>重命名</li></a>
+            </ul>
+            {/volist}
+
+            </tbody>
+        </table>
+
+        <div class="widget-header" style="position: relative;right:-1050px">
+            <div class="widget-buttons">
+                {$surList->render()|replace}
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+{include file="public/listJs" /}
+<script src="/static/lib/layer/layer.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/index/js/s_list.js"></script>
+<script>
+    var layer;
+    //复制问卷
+    function copy(surId) {
+        $.ajax({
+            url:"{:url('index/survey/copy')}",
+            type:'post',
+            data:{surId:surId},
+            dataType: 'json',
+            success:function () {
+                if(data.code == 1){
+                    var node = document.createElement('tr');
+                    node.innerHTML = "  <td><input type=\"hidden\" value=\"{$list.surId}\" id=\"sur\"><div class=\"123456\" style=\"float: left\">{$list.surName}</div><span >({$list.surId})</span></td>\n" +
+                        "                <td class=\"surStatus\">\n" +
+                        "                    {if $list.surStatus==0}\n" +
+                        "                    草稿\n" +
+                        "                    {elseif $list.surStatus==1 /}\n" +
+                        "                    正在运行\n" +
+                        "                    {elseif $list.surStatus==2 /}\n" +
+                        "                    暂停\n" +
+                        "                    {/if}\n" +
+                        "                </td>";
+                    node.innerHTML += " </td>\n" +
+                        "                <td><a class=\"Hui-iconfont\" href=\"#\" id=\"myDiv{$list.surId}\" onmousedown=\"menu({$list.surId})\">&#xe6f9;</a></td>\n" +
+                        "                <td>0</td>\n" +
+                        "                <td>{$list.sur_addTime}</td>";
+                    node.innerHTML += "  <td><a href=\"javascript:;\" class=\"Hui-iconfont\" style=\"color: #008fff\" onclick=\"start(this,'{$list.surId}')\"> {if $list.surStatus==0 or $list.surStatus==2 }&#xe6e6;<span id=\"start\">发布</span></a>\n" +
+                        "                {elseif $list.surStatus==1/}<a href=\"javascript:;\" class=\"Hui-iconfont\" style=\"color: #fa911e\" onclick=\"stop(this,'{$list.surId}')\"> &#xe6e5;<span id=\"stop\">停止</span></a>\n" +
+                        "                {/if}</td>";
+                    node.innerHTML += " </tr>\n" +
+                        "            <ul id=\"myMenu\" style=\"z-index: 9999\">\n" +
+                        "                <a href=\"javascript:\" onclick=\"layer_show('投放问卷','{:url(\"index/index/share\")}','379','401')\"><li>投放问卷</li></a>\n" +
+                        "                <a href=\"javascript:\" onclick=\"apply({$list.surId})\"><li>申请成为模板</li></a>\n" +
+                        "                <a href=\"javascript:\"><li class=\"line\">导出TXT文档</li></a>\n" +
+                        "                <a href=\"javascript:\"><li>统计分析</li></a>\n" +
+                        "                <a href=\"javascript:\"><li class=\"line\">清空数据</li></a>\n" +
+                        "                <a href=\"{:url(\"index/question/create\",['surId'=>$list.surId])}\"><li>编辑</li></a>\n" +
+                        "                <a href=\"javascript:\" onclick=\"copy({$list.surId})\"><li >复制</li></a>\n" +
+                        "                <a href=\"javascript:\" onclick=\"deleteSur({$list.surId})\"><li>删除</li></a>\n" +
+                        "                <a href=\"javascript:;\" onclick=\"rename()\"><li>重命名</li></a>\n" +
+                        "            </ul>";
+                   document.getElementById('tb_sur').appendChild(node);
+                }
+            }
+        })
+    }
+    //重命名
+    function rename() {
+        layui.use('layer',function () {
+            layer = layui.layer;
+            layer.prompt({title: '重命名', formType: 2}, function(pass, index){
+                layer.close(index);
+                var title = document.getElementsByClassName('123456');
+                title[0].innerText = pass;
+                var id = document.getElementById('sur').value;
+                $.ajax({
+                    url:"{:url('index/survey/rename')}",
+                    data:{surName:pass,id:id} ,
+                    dataType:'json',
+                    type:'post',
+                    success:function (data) {
+                        if(data.code == 1){
+                            layer.msg(data.msg,{
+                                icon:6,
+                                time:2000
+                            });
+                        }else{
+                            layer.open({
+                                title:"重命名",
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            })
+                        }
+                    }
+                })
+            });
+        })
+    }
+
+    //删除问卷
+    function deleteSur(id) {
+        var surTr = 'surTr'+id;
+        layer.confirm('确定删除该问卷吗？',function () {
+            $.ajax({
+                url:"{:url('index/survey/deleteSur')}",
+                data:{id:id},
+                type:'post',
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        var tr = document.getElementById(surTr);
+                        tr.parentNode.removeChild(tr);
+                        layer.msg(data.msg, {
+                            icon:6,
+                            time:2000,
+                        })
+                    }else {
+                        layer.open({
+                            title:'问卷删除',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    /*问卷停止发布*/
+    function stop(obj,id) {
+        layer.confirm('确定停止发布吗？',function (index) {
+            $.ajax({
+                url:"{:url('index/survey/stop')}",
+                type:'post',
+                data:{id:id},
+                dataType: 'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        $(obj).parents("td").find("a").html('<a onClick="start(this,'+id+')"' +
+                            ' href="javascript:;" title="发布" style="text-decoration:none;color: #008fff">&#xe6e6;<span id="stop">发布</span></a>');
+                        $(obj).parents('tr').find('.surStatus').html('草稿');
+                        $(obj).remove();
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000
+                        },function () {
+                            location.reload();
+                        })
+                    }else  if(data.code == 0){
+                        layer.open({
+                            title:'发布信息',
+                            content: data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        })
+    }
+    
+    /*问卷开始发布-*/
+    function start(obj,id) {
+        layer.confirm('确定开始发布吗？',function (index) {
+            $.ajax({
+                url:"{:url('index/survey/start')}",
+                type:'post',
+                data:{id:id},
+                dataType: 'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        $(obj).parents("td").find("a").html('<a onClick="stop(this,'+id+')"' +
+                            ' href="javascript:;" title="停止" style="text-decoration:none;color: #fa911e">&#xe6e5;<span id="stop">停止</span></a>');
+                        $(obj).parents('tr').find('.surStatus').html('正在运行');
+                        $(obj).remove();
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000
+                        },function () {
+                            location.reload();
+                        })
+                    }else if(data.code == 0){
+                        layer.open({
+                            title:'发布信息',
+                            content: data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    //申请成为模板
+    function apply(id) {
+        layer.confirm('确定申请吗？',function () {
+            $.ajax({
+                url:"{:url('index/survey/apply')}",
+                data:{id:id},
+                type:'post',
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000
+                        })
+                    }else {
+                        layer.open({
+                            title:'申请信息',
+                            content:data.msg,
+                            icon:5,
+                            anim:5
+                        })
+                    }
+                }
+            })
+        })
+    }
+</script>
+</html>

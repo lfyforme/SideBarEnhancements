@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+<body id="list">
+{include file="public/_firstTitle" /}
+<div id="surveylist" style="">
+    <div class="header" style="margin-top: 175px">
+        <div  style="top: -60px;position: relative">
+           问卷将在1个月后自动清除
+        </div>
+        <div id="recycleBin">
+            <a class="layui-btn layui-btn-radius" style="height: 34px;text-decoration: none" href="javascript:;" onclick="clearRec()">
+                <i class="Hui-iconfont">&#xe72a;</i> 清空回收站
+            </a>
+        </div>
+    </div>
+    <div>
+        <hr style="border: 0.5px solid gray();width: 82%;margin-top: -104px;margin-left: 120px">
+    </div>
+    <div>
+        <table class="layui-table" lay-size="lg" lay-even lay-skin="nob" style="width:82%;margin-left: 122px;margin-top: 30px">
+            <colgroup>
+                <col width="300">
+                <col width="200">
+                <col width="200">
+                <col width="200">
+                <col >
+                <col >
+            </colgroup>
+            <thead>
+            <tr>
+                <th>问卷名</th>
+                <th>发布时间</th>
+                <th>回收量</th>
+                <th>清空数据</th>
+                <th>恢复</th>
+                <th>彻底删除</th>
+            </tr>
+            </thead>
+
+            <tbody id="tb_sur">
+            {volist name="surList" id="list"}
+            <tr>
+                <td><input type="hidden" value="{$list.surId}" id="sur">{$list.surName}</td>
+                <td>{$list.sur_addTime}</td>
+                <td>0</td>
+                <td><a href="javascript:;">清空数据</a></td>
+                <td style="text-align: center"><a href="javascript:;" class="Hui-iconfont" onclick="recover(this,'{$list.surId}')">&#xe66b;</a></td>
+                <td style="text-align: center"><a href="javascript:;" class="Hui-iconfont" style="color: #008fff" onclick="comDelete(this,'{$list.surId}')"> &#xe6a6;</a></td>
+            </tr>
+            {/volist}
+
+            </tbody>
+        </table>
+
+        <div class="widget-header" style="position: relative;right:-1050px">
+            <div class="widget-buttons">
+                {$surList->render()|replace}
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+{include file="public/listJs" /}
+<script src="/static/lib/layer/layer.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script>
+    var layer;
+    layui.use('layer',function () {
+        layer = layui.layer;
+    })
+    function recover(obj,id) {
+        layer.confirm('确定恢复吗？',function () {
+            $.ajax({
+                url:"{:url('index/survey/recover')}",
+                data:{id:id},
+                type:'post',
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        $(obj).parents('tr').remove();
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000
+                        })
+                    }else{
+                        layer.open({
+                            title:'恢复信息',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    function comDelete(obj,id) {
+        layer.confirm('确定彻底删除吗？',function () {
+            $.ajax({
+                url:"{:url('index/survey/comDelete')}",
+                data:{id:id},
+                type:'post',
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        $(obj).parents('tr').remove();
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000
+                        })
+                    }else{
+                        layer.open({
+                            title:'删除信息',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    function clearRec() {
+        var tbId = document.getElementById('tb_sur');
+        layer.confirm('确定全部清空',function () {
+            $.ajax({
+                url:"{:url('index/survey/clear')}",
+                dataType:'json',
+                typr:'post',
+                success:function (data) {
+                    if(data.code == 1){
+                        tbId.parentNode.removeChild(tbId);
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000
+                        })
+                    }else{
+                        layer.open({
+                            title:'清空回收站',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+</script>
+</html>

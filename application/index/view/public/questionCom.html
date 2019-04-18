@@ -1,0 +1,32 @@
+<input type="hidden" name="surId" id="surId" value="{$surId}">
+<input type='hidden' name='quesId' id='quesId' value='{$quesId}'>
+<div class="question_title"><span>题目</span><input type="text" contenteditable="true"
+                                                  value="{$ques.quesTitle}"
+                                                  name='quesTitle' id='title'></div>
+<div class="question_description"><span>描述</span><input type="text" contenteditable="true" name='quesDesc'
+                                                        value="{$ques.quesDesc}" id='desc'></div>
+<div class="question_type">
+    <select name="question_type" id='question_type' >
+        <option value="单选题">单选题</option>
+        <option value="多选题">多选题</option>
+        <option value="下拉题">下拉题</option>
+        <option value="矩形单选题">矩形单选题</option>
+        <option value="矩形多选题">矩形多选题</option>
+        <option value="排序题">排序题</option>
+        <option value="量标题">量标题</option>
+    </select>
+    <!--<script>-->
+        <!--var selectId = document.getElementById('question_type');-->
+        <!--var surId = document.getElementById('surId').value;-->
+        <!--selectId.onchange = function() {-->
+            <!--var result = selectId.options[selectId.selectedIndex].innerHTML;//获取选中文本-->
+
+            <!--var index = parent.layer.getFrameIndex(window.name);-->
+            <!--addQues(result, surId);-->
+            <!--parent.layer.close(index);-->
+
+        <!--}-->
+    <!--</script>-->
+    <input type="checkbox" name="question_check" id='question_check'
+           checked="{if $ques.quesReq != 0}checked{/if}" }>必选题
+</div>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div style="float: left;margin-left: 10px"><img src="/{$userInfo.user_logo}" width="120px" height="120px"alt=""></div>
+    <div id="person" style="float: left;margin-left: 20px">
+        <div class="person-item" ><span>用户名:</span>&nbsp;{$userInfo.username}{if {:session('user.sex')}==0 }<i class="layui-icon">&#xe662;</i>
+                {else /}<i class="layui-icon">&#xe661;</i>{/if}</div>
+        <div class="person-item"><span>账号ID:</span>{$userInfo.userId}</div>
+        <div class="person-item"><span>昵称:</span>{$userInfo.nickname}</div>
+        <div class="person-item"><span>邮箱地址:</span>{$userInfo.add_time}</div>
+        <div class="person-item"><span>年龄:</span>{$userInfo.age}</div>
+
+    </div>
+    <div style="margin-left: 150px;margin-top: 5px"><button class="layui-btn layui-btn-primary" onclick="change('{:url("index/index/changeInfomation")}')">修改个人信息</button></div>
+</body>
+{include file="public/_baseJs" /}
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+    function change(url) {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+        parent.layer_show('编辑个人信息',url,'419','361');
+    }
+</script>
+</html>

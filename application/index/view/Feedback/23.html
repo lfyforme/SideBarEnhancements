@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="/aixuexi/public/admin/js/plugins/jquery-1.7.min.js"></script>
+<style>
+    #modify{list-style-type:none;border:1px solid black;}
+    #modify li{ width:200px; height:30px; line-height:30px; background:#abcdef; }
+    .myform input{margin:0px;padding:0px;height:30px;line-height:30px;}
+</style>
+<div class="userList">
+    <div class="siteCon clear">
+        <p class="wenzhangtishi">用户列表</p>
+    </div>
+    <div style="padding-left:10px;">
+        <button class="btn btn-default"><a href="/index.php/User/lists">用户列表</a></button>
+        <button class="btn btn-default"><a href="/index.php/User/add">添加用户</a></button>
+    </div>
+    <div style="width:90%;margin:10px auto;text-align:right;border:0px solid red;height:30px;line-height:30px;">
+        <form name="myform" class="myform" method="get" action="">
+            按用户名:<input type="text" name="name" value=""/>
+            <input type="submit" name="sub" value="搜索" style="width:100px;"/>
+        </form>
+    </div>
+    <?php
+function getLeveName($level){
+   if($level=='1'){
+     $l='超级管理员';
+   }else if($level=='2'){
+     $l='高级管理员';
+   }else if($level=='3'){
+     $l='中级管理员';
+   }else if($level=='4'){
+     $l='初级管理员';
+   }
+   return $l;
+}
+?>
+    <div id="mytab">
+        <table border="0" cellpadding="" cellspacing="" class="tab table-striped table-bordered table-hover table-responsive" style="width:98%;margin:0px auto;" id="table">
+            <tr>
+                <td width="7%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">编号</td>
+                <td width="8%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">用户名</td>
+                <td width="13%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">用户密码</td>
+                <td width="9%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">用户级别</td>
+                <td width="11%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">用户邮箱</td>
+                <td width="11%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">手机号码</td>
+                <td width="11%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">用户IP地址</td>
+                <td width="13%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">最近登陆时间</td>
+                <td width="17%" height="45" align="center" valign="middle" bgcolor="#CCCCFF">操作</td>
+            </tr>
+            <?php
+     if($arr){
+  foreach($arr as $v){
+   ?>
+            <tr class="user_<?php echo $v['id'];?>">
+                <td height="45" align="center" valign="middle"><?php echo $v['id']; ?></td>
+                <td height="45" align="center" valign="middle"><?php echo $v['name'];?></td>
+                <td height="45" align="center" valign="middle"><?php echo $v['password'];?></td>
+                <td height="45" align="center" valign="middle"><?php echo getLeveName($v['level']);?></td>
+                <td height="45" align="center" valign="middle"><?php echo $v['email'];?></td>
+                <td height="45" align="center" valign="middle"><?php echo $v['phone'];?></td>
+                <td height="45" align="center" valign="middle"><?php echo $v['loginip'];?></td>
+                <td height="45" align="center" valign="middle"><?php echo date('Y-m-d',$v['logintime']);?></td>
+                <td height="45" align="center" valign="middle"><a href="javascript:void(0)" title="<?php echo $v['id'];?>" class="update">修改</a>|<a href="javascript:void(0)" title="<?php echo $v['id'];?>" class="delete">删除</a></td>
+            </tr>
+            <?php
+ }
+    }
+?>
+        </table>
+    </div>
+</div>
+<script>
+    $(function(){
+        function autoupdate(){
+            $("a[class*=update]").click(function(){
+                $('#changeCon').show();
+                id=$(this).attr('title');
+                $.post('/index.php/Index/changeUser',{'id':id},function(data){
+                    $("#changeCon").html(data);
+                    $('#changeUser').click(function(){
+                        var id=$("#mid").val();
+                        var name=$("#mname").val();
+                        var password=$("#mpassword").val();
+                        var phone=$("#mphone").val();
+                        var email=$("#memail").val();
+                        var level=$("#mlevel").val();
+                        $.post('/index.php/Index/changeUserInfo',{'id':id,'name':name,'password':password,'phone':phone,'email':email,'level':level},function(dat){
+                            alert('更新成功');
+                            $('#changeCon').hide();
+                            $('#mytab').html('');
+                            $('#mytab').html(dat);
+                            autoupdate();
+                            autodelete();
+                        })
+                    })
+                })
+            })
+        }
+        function autodelete(){
+            $('.delete').click(function(){
+                var id=$(this).attr('title');
+                $.post('/index.php/Index/deleteUser',{'id':id},function(da){
+                    if(da==1){
+                        $("#table tr[class='user_"+id+"'").remove();
+                    }
+                    autodelete();
+                })
+            })
+        }
+        $("#changeCon").hide();
+        $('#addUser').click(function(){
+            var name=$('#name').val();
+            var password=$('#password').val();
+            var phone=$('#phone').val();
+            var email=$('#email').val();
+            var level=$('#level').val();
+            $.post('/index.php/Index/addUser',{'name':name,'password':password,'phone':phone,'email':email,'level':level},function(data){
+                $('#mytab').html('');
+                $('#mytab').html(data);
+                autodelete();
+                autoupdate();
+            })
+        })
+        $("a[class*=update]").click(function(){
+            $('#changeCon').show();
+            id=$(this).attr('title');
+            $.post('/index.php/Index/changeUser',{'id':id},function(data){
+                $("#changeCon").html(data);
+                $('#changeUser').click(function(){
+                    var id=$("#mid").val();
+                    var name=$("#mname").val();
+                    var password=$("#mpassword").val();
+                    var phone=$("#mphone").val();
+                    var email=$("#memail").val();
+                    var level=$("#mlevel").val();
+                    $.post('/index.php/Index/changeUserInfo',{'id':id,'name':name,'password':password,'phone':phone,'email':email,'level':level},function(dat){
+                        alert('更新成功');
+                        $('#changeCon').hide();
+                        $('#mytab').html('');
+                        $('#mytab').html(dat);
+                        autoupdate();
+                    })
+                })
+            })
+        })
+        $('.delete').click(function(){
+            var id=$(this).attr('title');
+            $.post('/index.php/Index/deleteUser',{'id':id},function(da){
+                if(da==1){
+                    $("#table tr[class='user_"+id+"'").remove();
+                }
+            })
+        })
+    })
+</script>
+<table class="tab table-striped table-bordered table-hover table-responed" style="width:90%;margin:5px auto;">
+    <tr>
+        <td height="45" colspan="2" align="center">添加用户</td>
+    </tr>
+    <tr>
+        <td width="332" height="45" align="right">用户名：</td>
+        <td width="634" height="45"><input type="text" name="name" value=""  id="name"/></td>
+    </tr>
+    <tr>
+        <td height="45" align="right">密码：</td>
+        <td height="45"><input type="password" name="password" value="" id="password"/></td>
+    </tr>
+    <tr>
+        <td height="45" align="right">手机号：</td>
+        <td height="45"><input type="text" name="phone" value=""  id="phone"/></td>
+    </tr>
+    <tr>
+        <td height="45" align="right">电子邮箱：</td>
+        <td height="45"><input type="text" name="email" value="" id="email"/></td>
+    </tr>
+    <tr>
+        <td height="45" align="right">用户级别：</td>
+        <td height="45"><select name="level" id="level">
+            <option value="">请选择</option>
+            <option value="1">超级管理员</option>
+            <option value="2">高级管理员</option>
+            <option value="3">中级管理员</option>
+            <option value="4">初级管理员</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td height="45" colspan="2" align="center"><input type="button" name="" value="添加用户" id="addUser"/></td>
+    </tr>
+</table>
+<div id="changeCon" style="border:1px solid #ccc;width:700px;margin:10px auto;height:auto;position:absolute;top:150px;background:#fff;z-index:999;">
+</div>
+</body>
+</html>

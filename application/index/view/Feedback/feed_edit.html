@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/admin/js/jquery.min.js"></script>
+</head>
+<body style="overflow: hidden">
+<div class="page-body" style="margin-left: 15px;margin-right: 15px">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget radius-bordered">
+                <div class="widget-body">
+                    <form action="" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="fBTopic" class="control-label col-sm-2 no-padding-left">反馈名称</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="fBTopic" name="fBTopic" value="{$feedInfo.fBTopic}"
+                                       placeholder="反馈名称"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fBContent" class="control-label col-sm-2 no-padding-left">反馈内容</label>
+                            <div class="col-sm-6">
+                                <textarea id="fBContent" class="form-control" rows="10" name="fBContent"
+                                          placeholder="反馈内容" style="resize: none;">{$feedInfo.fBContent} </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align: center">
+                            <div class="col-sm-offset-2 col-sm-6">
+                                <a class="btn btn-primary" onclick="fBUpdate()" href="javascript:;">反馈</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var layer;
+    var index = parent.layer.getFrameIndex(window.name);
+    layui.use('layer', function () {
+        layer = layui.layer;
+    })
+    function fBUpdate() {
+        var index = parent.layer.getFrameIndex(window.name);
+        $.ajax({
+            url:"{:url('index/feedback/feedEdit')}",
+            data:$('form').serialize(),
+            type:'post',
+            dataType:'json',
+            success:function (data) {
+                if(data.code == 1){
+                    window.parent.location.reload();
+                    layer.msg(data.msg,{
+                        icon:6,
+                        time:3000,
+                    });
+                    parent.layer.close(index);
+
+                }else{
+                    layer.open({
+                        title:'公告添加',
+                        content:data.msg,
+                        icon:5,
+                        anim:6
+                    });
+                }
+            }
+        })
+    }
+
+</script>
+</html>

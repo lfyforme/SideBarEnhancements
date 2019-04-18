@@ -1,0 +1,190 @@
+{include file="public/_head" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;用户管理
+                    </li>
+                    <li>用户列表</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <a href="{:url('admin/user/userAdd')}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;用户添加</a>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <span class="widget-caption">用户列表</span>
+                                <div class="widget-buttons">
+                                    {$list->render()|replace}
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>头像</th>
+                                        <th>用户名称</th>
+                                        <th>昵称</th>
+                                        <th>用户邮箱</th>
+                                        <th>性别</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name = "list" id = "vo"}
+                                    <tr>
+                                        <td>{$vo.userId}</td>
+                                        <td><img src="/{$vo.user_logo}" width="50px" height="50px" alt=""></td>
+                                        <td>{$vo.username}</td>
+                                        <td>{$vo.nickname}</td>
+                                        <td>{$vo.email}</td>
+                                        <td class="ss">{$vo.status}</td>
+                                        <td id="operation">
+                                            {if $vo.status == 0}
+                                            <a href="javascript:;" dataid="{$vo.userId}" class="btn btn-darkorange btn-xs user-status0" status="{$vo.status}">禁用</a>
+                                            {else/}<a href="javascript:;" dataid="{$vo.userId}" class="btn btn-darkorange btn-xs user-status1" status="{$vo.status}">启用</a>
+                                            {/if}<a href="{:url('admin/user/useredit',['id' => $vo.userId])}" class="btn btn-azure btn-xs">编辑</a>
+                                            <a href="#"  dataid="{$vo.userId}" class="btn btn-danger btn-xs user-del" >删除</a>
+                                        </td>
+                                    </tr>
+                                    {/volist}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+{include file="public/_js" /}
+<script>
+    $(function () {
+        $('.user-status0').click(function () {
+            var id = $(this).attr('dataid');
+            var status = $(this).attr('status');
+            layer.confirm('确定禁用吗？',function () {
+                $.ajax({
+                    url:"{:url('admin/user/forbid')}",
+                    data:{id:id,status:status},
+                    type:'post',
+                    dataType:'json',
+                    success:function (data) {
+                        if (data.code != 1) {
+                            layer.open({
+                                title: '用户状态信息',
+                                content: data.msg,
+                                icon: 5,
+                                anim: 6
+                            })
+                        } else {
+                            var tr = document.getElementById('operation');
+
+                            tr.parentNode.removeChild(tr);
+                            tr.innerHTML=' <a href="javascript:;" dataid="{$vo.userId}" class="btn btn-darkorange btn-xs user-status0" status="{$vo.status}">禁用</a>\n' +
+                                '                                            ';
+                            layer.msg(data.msg, {
+                                icon: 6,
+                                time: 2000,
+                            })
+                        }
+                    }
+                })
+            })
+        });
+        $('.user-status1').click(function () {
+            var id = $(this).attr('dataid');
+            var status = $(this).attr('status');
+            layer.confirm('确定启用吗?',function () {
+                $.ajax({
+                    url:"{:url('admin/user/enable')}",
+                    data:{id:id,status:status},
+                    type:'post',
+                    dataType:'json',
+                    success:function (data) {
+                        if (data.code != 1) {
+                            layer.open({
+                                title: '用户状态信息',
+                                content: data.msg,
+                                icon: 5,
+                                anim: 6
+                            })
+                        } else {
+                            var tr = document.getElementById('user-status0');
+
+                            tr.parentNode.removeChild(tr);
+                            tr.innerHTML ='<a href="javascript:;" dataid="{$vo.userId}" class="btn btn-darkorange btn-xs user-status1" status="{$vo.status}">启用</a>\n' +
+                                '                                            ';
+                            layer.msg(data.msg, {
+                                icon: 6,
+                                time: 2000,
+                            })
+                        }
+                    }
+                })
+            })
+        });
+        $(".pagination").addClass("pagination-sm");
+
+        $('.user-del').click(function () {
+            var id = $(this).attr('dataid');
+            layer.confirm('确定删除吗？',{
+                btn: ['确定','取消']
+            },function (index) {
+                layer.close(index);
+                $.ajax({
+                    url:"{:url('admin/user/userdelete')}",
+                    type:'post',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function (data) {
+                        if(data.code == 1){
+                            layer.msg(data.msg,{
+                                icon:6,
+                                time:2000,
+                            },function () {
+                                location.href = data.url;
+                            })
+                        }else{
+                            layer.open({
+                                title:'删除失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            })
+                        }
+                    }
+                })
+            });
+
+        });
+    });
+
+</script>
+
+</body>
+<!--  /Body -->
+</html>

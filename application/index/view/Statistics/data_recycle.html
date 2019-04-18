@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body style="overflow-y: hidden">
+{include file="public/_firstTitle" /}
+{include file="public/_secondTitle" /}
+{include file="public/_leftMenu" /}
+<div style="background-color:#f7f7f7;" id="recycle_main">
+    <div style="position: relative;left:180px;top:150px;background-color: white;width:1136px;padding: 20px">
+        <div style="">
+            <div >
+                <span style="font-size: 20px;color: #333333">题目</span>
+                <span style="font-size:14px;color: #999999">ID:3224456</span>
+                <i class="layui-icon" style="position:relative;font-size: 24px;left: 690px;border: 1px solid grey;padding: 4px">&#xe9aa;</i>
+                <i class="layui-icon" style="position:relative;font-size: 24px;left: 710px;border: 1px solid grey;padding: 4px">&#xe640;</i>
+                <select name="city" lay-verify="" style="position:relative;left:730px;border-radius: 7px;padding: 8px 20px;">
+                    <option value="">请选择一个城市</option>
+                    <option value="010">北京</option>
+                    <option value="021">上海</option>
+                    <option value="0571">杭州</option>
+                </select>
+            </div>
+            <div style="margin-top: 20px"><span style="font-size: 16px;float: left;margin-top: 10px;margin-right: 15px">选择时间</span></div>
+            <div class="layui-inline" style="float: left">
+                <input type="text" class="layui-input" id="lasttime" value="1999-02-20">
+                <i class="layui-icon"  style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
+            </div>
+            <div><span style="font-size: 16px;float: left;margin-top: 10px;margin-right: 10px;margin-left: 10px">至</span></div>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" id="finaltime" value="1999-02-20">
+                <i class="layui-icon" style="position: relative;top:-27px;left:145px;font-size: 18px">&#xe637;</i>
+            </div>
+            <div >
+                <span style="font-size: 16px">过滤数据</span>
+
+                <button class="layui-btn layui-btn-primary">重复IP</button>
+            </div>
+        </div>
+        <div>
+            <table class="layui-table" lay-size="lg"  style="width:82%;margin-left: 02px;margin-top: 20px">
+                <colgroup>
+                    <col >
+                    <col >
+                    <col >
+                    <col >
+                    <col >
+                    <col >
+                </colgroup>
+                <thead>
+                <tr>
+                    <th><input type="checkbox" name="" title="写作"></th>
+                    <th>查看</th>
+                    <th>编号</th>
+                    <th>开始答题时间</th>
+                    <th>结束答题时间</th>
+                    <th>题目</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="checkbox" name="" title="写作"</td>
+                    <td><a href="" class="Hui-iconfont">&#xe725;</a></td>
+                    <td>1</td>
+                    <td>2018-03-27 18:20</td>
+                    <td>2018-03-27 18:20</td>
+                    <td>asd</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="" title="写作" ></td>
+                    <td><a href="" class="Hui-iconfont">&#xe725;</a></td>
+                    <td>2</td>
+                    <td>2018-03-27 18:20</td>
+                    <td>2018-03-27 18:20</td>
+                    <td>as</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div></div>
+</div>
+</body>
+<script src="/static/lib/echarts.js"></script>
+{include file="public/_basejs" /}
+<script src="/static/lib/layer/layer.js"></script>
+<script src="/static/lib/china.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#lasttime'//指定元素
+        });
+
+        var laydate2 = layui.laydate;
+        laydate2.render({
+            elem: '#finaltime'//指定元素
+        });
+    });
+</script>
+</html>

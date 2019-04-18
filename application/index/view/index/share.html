@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script src="/static/layui/layui.js"></script>
+</head>
+<body style="overflow-y: hidden">
+<div style="padding:20px;overflow-y: hidden">
+    <p class="tip"  style="font-family: Microsoft YaHei;font-size: 12px;color: #fe6f58;    margin-bottom: 10px;">用户通过以下方式回答该问卷，将记入统计结果</p>
+    <p class="text" style="font-family: Microsoft YaHei;font-size: 12px;color:#cdcdcd;    margin-bottom: 10px;">方式一：问卷真实地址，复制或分享该链接给他人填写</p>
+    <p class="link" style="display: inline-block;"><input type="text" name="qrcode" id="qrcode"class="layui-input" style="width:187px">
+        <span class="layui-btn layui-btn-primary" style="margin-top: -57px;margin-left:195px">复制</span>
+        <span class="layui-btn layui-btn-primary" style="margin-top: -88px;margin-left:265px">打开</span>
+    </p>
+    <p class="text" style="font-family: Microsoft YaHei;font-size: 12px;color:#cdcdcd;margin-bottom: 10px;margin-top:-20px">方式二：手机扫描打开链接，分享朋友即可答题</p>
+    
+    <div><img src="{$iSrc}" alt="二维码"></div>
+
+</div>
+</body>
+</html>

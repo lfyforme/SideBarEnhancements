@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script src="/static/layui/layui.js"></script>
+</head>
+<body style="overflow-y: hidden">
+<div class="page-body" style="padding: 10px">
+    <a href="#" onclick="layer_show('公告添加','{:url("admin/news/newsAdd")}','579','631')" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;公告添加</a>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-caption">公告列表</span>
+                    <div class="widget-buttons">
+                        {$list->render()|replace}
+                    </div>
+                </div>
+                <div class="widget-body">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>反馈名称</th>
+                            <th>反馈内容</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name = "list" id = "vo"}
+                        <tr>
+                            <td>{$vo.fBId}</td>
+                            <td>{$vo.fBTopic}</td>
+                            <td>{$vo.fBContent}</td>
+                            <td>{$vo.fB_addTime}</td>
+
+                            <td>
+                                <a href="#"  onclick="layer_show('公告更新','{:url('index/feedback/feedEdit',['fBId' => $vo.fBId])}','379','431')" class="btn btn-azure btn-xs">编辑</a>
+                                <a href="#" onclick="del(this,'{$vo.fBId}')" class="btn btn-danger btn-xs member-del" >删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{include file="public/_baseJs" /}
+<script>
+    var layer;
+    layui.use('layer',function () {
+        layer = layui.layer;
+    })
+    function del(obj,id){
+        layer.confirm('确定删除吗？',{
+            btn: ['确定','取消']
+        },function (index) {
+            layer.close(index);
+            $.ajax({
+                url:"{:url('index/feedback/feedDel')}",
+                type:'post',
+                data:{id:id},
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        layer.msg(data.msg,{
+                            icon:6,
+                            time:2000,
+                        },function () {
+                            $(obj).parents('tr').remove();
+                            location.href = data.url;
+                        })
+                    }else{
+                        layer.open({
+                            title:'删除失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        });
+    }
+</script>
+</html>

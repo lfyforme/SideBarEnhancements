@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{block name="title"}调查问卷{/block}</title>
+    <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/index/css/animate.css"/>
+    <link rel="stylesheet" href="/static/index/css/index.css"/>
+    <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
+</head>
+<body style="overflow-x: hidden">
+{include file="public/_firstTitle" /}
+
+<div  style="margin-top: -289px;">
+<div class="content center-block animated fadeInDown" style="margin-top: 378px">
+    <div class="page-header h1" style="align-content: center">用户注册</div>
+    <form action="#">
+        <div class="form-group">
+            <label for="username" class="control-label">用户名</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="用户名" />
+        </div>
+        <div class="form-group">
+            <label for="password" class="control-label">密码</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="密码" />
+        </div>
+        <div class="form-group">
+            <label for="conpass" class="control-label">确认密码</label>
+            <input type="password" class="form-control" id="conpass" name="conpass" placeholder="确认密码" />
+        </div>
+        <div class="form-group">
+            <label for="nickname" class="control-label no-padding-right">昵称</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="昵称" />
+        </div>
+        <div class="form-group">
+            <label for="email" class="control-label no-padding-right">email</label>
+                <input type="email" class="form-control" id="email"  name="email" placeholder="email" />
+        </div>
+        <div class="form-group">
+            <label for="verify" class="control-label">验证码</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="verify" name="verify" placeholder="验证码" />
+                <span class="input-group-addon" style="padding: 0;height: 50px;"><img src="{:captcha_src()}" alt="" onclick="this.src='{:captcha_src()}'"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button id="register" class="btn btn-primary" style="width: 155px;margin-right:90px">注册账户</button>
+            <a class="btn btn-primary btn-success " href="{:url('index/index/login')}" style="width: 155px" >
+                返回登录
+            </a>
+        </div>
+
+    </form>
+</div>
+</div>
+
+</body>
+
+{include file="public/_baseJs" /}
+</html>

@@ -1,0 +1,67 @@
+{include file="public/questionHead" /}
+<body onload="set_select_checked('question_type','矩形多选题')">
+<li class="drag-item" value="" style="padding-left: 112px;padding-right: 70px">
+    <div class="survey_subject">
+        {include file="public/questionCom" /}
+        <div class="inputs">
+            <ul>
+                <li style="display: inline-block"><h3>问题管理</h3>
+                    <ul class="input_coll" style="margin-left: 38px" id="inner">
+                        {if $ques.answer != ""}
+                        {volist name="ques.inner" id="vo2"}
+                        <li> <span class="Hui-iconfont">&#xe6c6;<input name="inner" type="text" contenteditable="true"
+                                                                       value="{$vo2.quesInner}">
+                               <input type="hidden" value="{$vo2.innerId}" name="innerId"><a
+                                href="javascript:;" onclick="deleteInput(this)">×</a></span></li>
+                        {/volist}
+                        {else /}
+                        <li> <span class="Hui-iconfont">&#xe6c6;
+                                <input type="text" contenteditable="true" name="inner"  value="问题">
+                                 <input type="hidden" value="1" name="innerId">
+                                <a href="javascript:;" onclick="deleteInput(this)">×</a>
+                            </span>
+                        </li>
+                        <li> <span class="Hui-iconfont">&#xe6c6;<input type="text" contenteditable="true" name="inner"  value="问题">
+                             <input type="hidden" value="1" name="innerId">
+                            <a href="javascript:;" onclick="deleteInput(this)">×</a></span></li>
+                        {/if}
+                    </ul>
+                </li>
+                <li style="display: inline-block"><h3>选项管理</h3>
+                    <ul class="input_coll" style="margin-left: 38px"  id="options">
+                        {if $ques.answer != ""}
+                        {volist name="ques.answer" id="vo2"}
+                        <li> <span class="Hui-iconfont">&#xe6c6;<input name="option" type="text" contenteditable="true" value="{$vo2.answer}">
+                             <input type="hidden" value="{$vo2.answerId}" name="optionId">
+                            <a href="javascript:;" onclick="deleteInput(this)">×</a></span></li>
+                        {/volist}
+                        {else /}
+                        <li> <span class="Hui-iconfont">&#xe6c6;<input type="text" name="option" contenteditable="true" value="选项">
+                             <input type="hidden" value="1" name="optionId">
+                            <a href="javascript:;" onclick="deleteInput(this)">×</a></span></li>
+                        <li> <span class="Hui-iconfont">&#xe6c6;<input type="text" name="option" contenteditable="true" value="选项">
+                             <input type="hidden" value="1" name="optionId">
+                            <a href="javascript:;" onclick="deleteInput(this)">×</a></span></li>
+                        {/if}
+                    </ul>
+                </li>
+            </ul>
+
+            <span class="input-add2">新建选项</span><span class="input-add">新建选项</span>
+            <div class="question-logic">
+                <div class="logic-container"><span>逻辑设置:</span><a href="">题目关联</a><a href="">跳题逻辑</a></div>
+            </div>
+            <div class="question_btn">
+                <button class="layui-btn layui-btn-primary" type="button" onclick='cancelInfo(this)'>
+                取消
+                </button>
+
+                <button type="button" style="text-decoration: none" class="layui-btn layui-btn-normal"
+                        onclick='saveInfo(this,{$surId},"{:url('index/question/saveInfo')}","0","1")'>确定
+                </button></div>
+        </div>
+    </div>
+</li>
+</body>
+<script src="/static/index/js/create_ques.js"></script>
+</html>
