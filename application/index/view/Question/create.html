@@ -114,7 +114,7 @@
             <span style="float: left">{$key}.</span>
                 {if $vo.quesType == "单选题"}
                 <div id="ques{$vo.quesId}" onmouseover="quesOpOver('{$vo.quesId}',this)" onmouseout="quesOpOut('{$vo.quesId}',this)">
-                    <div onmouseover=""  onclick="addQues('添加单选题','{:url("index/question/single",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
+                    <div onclick="addQues('添加单选题','{:url("index/question/single",["id"=>$vo.quesId,"surId"=>$sur.surId])}')"
                     style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px;">
                     <div style="width: 745px">
                         <input type="hidden" name="quesId" value="{$vo.quesId}">

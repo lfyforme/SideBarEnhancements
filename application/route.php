@@ -39,6 +39,8 @@ Route::rule('share','index/index/share','get|post');
 Route::rule('apply','index/survey/apply','get|post');
 Route::rule('samList','index/Sample/samList','get|post');
 Route::rule('create_ques','index/question/createQues','get|post');
+Route::rule('sur/[:surId]','index/preview/view_sur1','post|get');
+Route::rule('sur/[:samId]','index/preview/view_sur','post|get');
 //后台路由php
 Route::group('admin',function (){
     Route::rule('login','admin/index/login','get|post');

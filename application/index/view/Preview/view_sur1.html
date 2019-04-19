@@ -11,54 +11,64 @@
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <link href="/static/lib/Hui-iconfont_v1.0.9/1.0.9/iconfont.css" rel="stylesheet" type="text/css"/>
 </head>
-<body style="background-color: #fafafa">
+<body style="background-color: #fafafa;
+    background: url('//image.wjx.com/images/newbg/dream-seeker@2x.jpg')  top center;
+ background-size: 1px 300px;
+   ">
+<div>
+
+</div>
 <div class="editor_main" style="margin-top: 144px;margin-left:200px;width:950px;background-color: white">
     <div class="survey_page"></div>
-    <div class="survey_main">
+    <div class="survey_main" style="padding-top:0px;">
         <input type="hidden" value="{$sur.surId}" id="surId">
-        <form action="">
-            <div class="survey_title" style="margin-right: 90px;margin-top:20px;padding: 9px 10px;width: 100%;">
-                <a class="title_content" style="padding: 10px 0;margin: 0 145px;">
-                    <input type="text" contenteditable="true" onblur="saveTitle('{:url('index/survey/saveTitle')}')"
-                           id="title"
-                           style=" border:none;text-align: center;width: 710px;line-height: 25px;font-size: 24px;color: rgb(51, 51, 51)"
-                           value="{$sur.surName}">
-                </a>
+        <div class="survey_title" style="margin-right: 130px;margin-top:20px;padding: 9px 10px;width: 100%;">
+            <div class="title_content" style="padding: 10px 0;margin: 0 130px;">
+                <input contenteditable="false" disabled
+                       style="background-color: white;font-size: 30px; border:none;text-align: center;width: 710px;line-height: 25px;font-size: 24px;color: rgb(51, 51, 51)"
+                       value="{$sur.surName}">
             </div>
-        </form>
+        </div>
 
         <div class="survey_desc" style="margin-left: -20px;margin-right: 90px;margin-top:20px;padding: 9px 10px">
-            <form action="">
-                <div class="layui-form-item layui-form-text">
-                    <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" onblur="saveDesc('{:url(" index/survey/saveDesc")}')" id="desc"
-                        contenteditable="true"
-                        class="layui-textarea" id="length"
-                        style="resize:none;overflow:hidden;font-size: 20px;border:1px"
-                        oninput="checked(this.value)" onchange="borderSet(this.value)">{$sur.surDesc}</textarea>
-                    </div>
+            <div class="layui-form-item layui-form-text">
+                <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" id="desc" contenteditable="true"
+                                  class="layui-textarea" id="length" style="resize:none;overflow:hidden;
+                        font-size: 20px;border:1px">{$sur.surDesc}</textarea>
                 </div>
-            </form>
+            </div>
         </div>
         <form class="layui-form" action="">
             <div style="margin-left: 115px;margin-right: 90px;">
+                <input type="hidden" value="{$count}" name="singleCount">
+                <?php $count = 0; ?>
+                <input type="hidden" value="{$countPull}" name="pullCount">
+                <?php $countPull = 0; ?>
+                <input type="hidden" value="{$countRecSingle}" name="recSingleCount">
+                <?php $countRecSingle = 0; ?>
+                <input type="hidden" value="{$countRecMul}" name="recMulCount">
+                <?php $countRecMul = 0; ?>
                 {volist name="sur.question" id="vo"}
                 <!--<?php $key = $key + 1 ?>-->
-                <span style="float: left">{$key}.</span>
+                <span style="float: left;font-size: 18px;font-weight: bolder">{$key}</span>
+
                 {if $vo.quesType == "单选题"}
                 <div id="ques{$vo.quesId}">
                     <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px;">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
                             <div style="padding-bottom: 10px">
-                                <span style="margin-left: 5px">{$vo.quesTitle}</span>
+                                <span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 1}<span style="color: red">*</span>{/if}
                             </div>
                             <div style="margin-left: 10px;margin-bottom: 5px">{$vo.quesDesc}</div>
+                            <?php $count += 1; ?>
                             <ul>
                                 {volist name="vo.answer" id="vo2"}
-                                <li><input type="radio" style="margin-left: 10px;margin-right: 10px;margin-top: 20px"
-                                           title="{$vo2.answer}"></li>
+                                <li><input type="hidden" id="single">
+                                    <input type="radio" style="margin-left: 10px;margin-right: 10px;margin-top: 20px"
+                                       name="single{$count}"    title="{$vo2.answer}" value="{$vo2.answerId}"></li>
                                 {/volist}
                             </ul>
                         </div>
@@ -70,15 +80,17 @@
                     <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
-                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                                <span style="font-size: 18px;color: #999;"> 【多选题】</span>
                             </div>
                             <div style="margin-left: 10px;margin-bottom: 10px">{$vo.quesDesc}</div>
 
                             <ul>
                                 {volist name="vo.answer" id="vo2"}
-                                <li style="margin-top: 8px"><input type="checkbox" lay-skin="primary"
-                                                                   title="{$vo2.answer}"></li>
+                                <li style="margin-top: 8px">
+                                    <input type="checkbox" lay-skin="primary" value="{$vo2.answerId}" title="{$vo2.answer}" name="checkbox[]">
+                                </li>
                                 {/volist}
                             </ul>
                         </div>
@@ -90,7 +102,7 @@
                     <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
-                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
                             </div>
                             <div style="margin-left: 10px">{$vo.quesDesc}</div>
@@ -104,20 +116,27 @@
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    {volist name="vo.inner" id="vo2"}
-                                    <th style="text-align: center">{$vo2.quesInner}</th>
+                                    {volist name="vo.answer" id="vo2"}
+                                    <th style="text-align: center">{$vo2.answer}</th>
                                     {/volist}
                                 </tr>
                                 </thead>
+                                <?php $countRecSingle += 1; ?>
+                                <?php $tempInner = 0; ?>
                                 <tbody>
-                                {volist name="vo.answer" id="vo2"}
+                                {volist name="vo.inner" id="vo2"}
                                 <tr>
-                                    <th style="text-align: center">{$vo2.answer}</th>
-                                    {volist name="vo.inner" id="vo2"}
-                                    <th style="text-align: center"><input type="radio"></th>
+                                    <?php $tempInner += 1; ?>
+
+                                    <th style="text-align: center"><input type="hidden" name="singleInner{$countRecSingle}{$tempInner}" value="{$vo2.innerId}">{$vo2.quesInner}</th>
+                                    {volist name="vo.answer" id="vo3"}
+
+                                    <th style="text-align: center"><input type="radio" name="recSingle{$countRecSingle}{$tempInner}" value="{$vo3.answerId}"></th>
                                     {/volist}
                                 </tr>
                                 {/volist}
+                                <?php $countInner = $tempInner; ?>
+                                <input type="hidden" value="{$countInner}" name="tempInner{$countRecSingle}">
                                 </tbody>
                             </table>
                         </div>
@@ -129,8 +148,9 @@
                     <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
-                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                                <span style="font-size: 18px;color: #999;"> 【矩形多选题】</span>
                             </div>
                             <div style="margin-left: 10px">{$vo.quesDesc}</div>
                             <table class="layui-table" lay-skin="line" style="border: none">
@@ -143,20 +163,25 @@
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    {volist name="vo.inner" id="vo2"}
-                                    <th style="text-align: center">{$vo2.quesInner}</th>
+                                    {volist name="vo.answer" id="vo2"}
+                                    <th style="text-align: center">{$vo2.answer}</th>
                                     {/volist}
                                 </tr>
                                 </thead>
+                                <?php $countRecMul += 1; ?>
+                                <?php $tempMulInner = 0; ?>
                                 <tbody>
-                                {volist name="vo.answer" id="vo2"}
+                                {volist name="vo.inner" id="vo2"}
                                 <tr>
-                                    <th style="text-align: center">{$vo2.answer}</th>
-                                    {volist name="vo.inner" id="vo2"}
-                                    <th style="text-align: center"><input type="checkbox" lay-skin="primary"></th>
+                                    <?php $tempMulInner += 1; ?>
+                                    <th style="text-align: center"><input type="hidden" name="mulInner{$countRecMul}{$tempMulInner}" value="{$vo2.innerId}">{$vo2.quesInner}</th>
+                                    {volist name="vo.answer" id="vo3"}
+                                    <th style="text-align: center"><input type="checkbox" name="recMul{$countRecMul}{$tempMulInner}[]" lay-skin="primary" value="{$vo3.answerId}"></th>
                                     {/volist}
                                 </tr>
                                 {/volist}
+                                <?php $countInner = $tempMulInner; ?>
+                                <input type="hidden" value="{$countInner}" name="tempMulInner{$countRecSingle}">
                                 </tbody>
                             </table>
                         </div>
@@ -168,14 +193,15 @@
                     <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
-                            <div style="padding-bottom: 10px;"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                            <div style="padding-bottom: 10px;"><span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
                             </div>
                             <div style="margin-left: 10px;height: 25px;padding-bottom: 10px">{$vo.quesDesc}</div>
-                            <select name="answer" id="answer" style="!important;width: 150px" class="layui-inline">
+                            <?php $countPull += 1; ?>
+                            <select name="pull{$countPull}" id="answer" style="!important;width: 150px" class="layui-inline">
                                 <option value="">请选择</option>
                                 {volist name="vo.answer" id="vo2"}
-                                <option value="{$vo2.answer}" style="margin-right: 10px;">{$vo2.answer}</option>
+                                <option value="{$vo2.answerId}" style="margin-right: 10px;">{$vo2.answer}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -187,13 +213,14 @@
                     <div style="width:950px;margin-left:-100px;padding-left:100px;min-height:220px">
                         <div style="width: 745px">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
-                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
+                                <span style="font-size: 18px;color: #999;"> 【排序题】</span>
                             </div>
                             <div style="margin-left: 10px;margin-bottom: 10px">{$vo.quesDesc}</div>
                             <ul>
                                 {volist name="vo.answer" id="vo2"}
-                                <li><input type="checkbox" lay-skin="primary">
+                                <li><input type="checkbox" lay-skin="primary" style="display: none">
                                     {$vo2.answer}
                                 </li>
                                 {/volist}
@@ -210,7 +237,7 @@
                             <input type="hidden" id="scale{$vo2.scaleId}" value="{$vo2.scaleId}">
                             <input type="hidden" id="scale{$vo2.scaleRange}" value="{$vo2.scaleRange}">
                             <input type="hidden" name="quesId" value="{$vo.quesId}">
-                            <div style="padding-bottom: 10px"><span style="margin-left: 5px">{$vo.quesTitle}</span>
+                            <div style="padding-bottom: 10px"><span style="margin-left: 5px;font-size: 18px">{$vo.quesTitle}</span>
                                 {if $vo.quesReq == 0}<span style="color: red">*</span>{/if}
                             </div>
                             <div style="margin-left: 10px">{$vo.quesDesc}</div>
@@ -232,38 +259,18 @@
                 {/if}
                 {/volist}
             </div>
+            <div>
+                <button class="layui-btn layui-btn-normal " type="button"
+                        style="width: 155px;margin-left:380px;margin-bottom: 40px;margin-top: -20px;" id="saveAnswer" value="{:url('index/answer/saveAnswer')}">提交
+                </button>
+            </div>
         </form>
-
-    </div>
-
-    <div id="question_subjects">
-        <ul style="margin:10px;padding:0;">
-        </ul>
     </div>
 
 </div>
 </body>
 {include file="public/_baseJs" /}
 <script src="/static/lib/easyui/jquery.easyui.min.js"></script>
-<style type="text/css">
-    .drag-item {
-        list-style-type: none;
-        display: block;
-        padding: 25px;
-        border: 1px solid #ccc;
-        margin: 2px;
-        background: #fafafa;
-        color: #444;
-    }
-
-    .indicator {
-        position: absolute;
-        font-size: 9px;
-        width: 10px;
-        height: 10px;
-        display: none;
-        color: red;
-    }
-</style>
 <script src="/static/index/js/create.js"></script>
+<script src="/static/index/js/viewSur.js"></script>
 </html>

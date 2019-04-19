@@ -13,9 +13,10 @@ class Question extends Controller
     {
         $result = model('Survey')->find(input('surId'));
         $quesInfo = model('Question')->with('answer')->where('surId', input('surId'))->select();
+
         $viewData = [
             'sur' => $result,
-            'quesInfo' => $quesInfo
+            'quesInfo' => $quesInfo,
         ];
         $this->assign($viewData);
         return view();
