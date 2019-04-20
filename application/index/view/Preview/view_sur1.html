@@ -127,7 +127,7 @@
                                 {volist name="vo.inner" id="vo2"}
                                 <tr>
                                     <?php $tempInner += 1; ?>
-
+                                    <!-- $tempInner保存的为小问题的数量因为单选题中只能选择一个选项，可以不用计算选项的数量-->
                                     <th style="text-align: center"><input type="hidden" name="singleInner{$countRecSingle}{$tempInner}" value="{$vo2.innerId}">{$vo2.quesInner}</th>
                                     {volist name="vo.answer" id="vo3"}
 
@@ -170,18 +170,27 @@
                                 </thead>
                                 <?php $countRecMul += 1; ?>
                                 <?php $tempMulInner = 0; ?>
+
                                 <tbody>
                                 {volist name="vo.inner" id="vo2"}
                                 <tr>
+                                    <!--$tempMulInner保存小问题的数量
+                                    $tempRecMul保存的为小问题中的选项数量
+                                    -->
                                     <?php $tempMulInner += 1; ?>
                                     <th style="text-align: center"><input type="hidden" name="mulInner{$countRecMul}{$tempMulInner}" value="{$vo2.innerId}">{$vo2.quesInner}</th>
+
+                                    <?php $tempRecMul = 0; ?>
                                     {volist name="vo.answer" id="vo3"}
+                                    <?php $tempRecMul += 1; ?>
                                     <th style="text-align: center"><input type="checkbox" name="recMul{$countRecMul}{$tempMulInner}[]" lay-skin="primary" value="{$vo3.answerId}"></th>
                                     {/volist}
+                                    <input type="hidden" value="{$tempRecMul}" name="tempRecMel{$countRecMul}{$tempMulInner}">
                                 </tr>
                                 {/volist}
                                 <?php $countInner = $tempMulInner; ?>
-                                <input type="hidden" value="{$countInner}" name="tempMulInner{$countRecSingle}">
+                                <input type="hidden" value="{$countInner}" name="tempMulInner{$countRecMul}">
+                                <!--<input type="hidden" value="{$tempRecMul}" name="tempRecMel{$countRecMul}{$countInner}">-->
                                 </tbody>
                             </table>
                         </div>

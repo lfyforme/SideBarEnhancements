@@ -8,6 +8,12 @@ use think\Model;
 
 class Innernum extends Model
 {
+    /*
+   * $recSingle保存的为整个矩形单选题的数据
+     * $dataInner保存为小问题的数据
+     * $dataSingle保存为选项的数据
+     * $dataTempInner保存为问题中的小问题数量的name数组
+   * */
     public function countRecSingle($recSingle, $singleCount, $dataInner, $dataSingle, $dataTempInner){
         $single = array();
         $k = 0;
@@ -30,38 +36,38 @@ class Innernum extends Model
         var_dump($result);
         return '矩形单选题人数增加成功';
     }
-    public function countRecMul($recMul, $mulCount, $dataInner, $dataMul, $dataTempInner){
+    /*
+   * $recMul保存的为整个矩形多选题的数据
+     * $dataInner保存为小问题的数据
+     * $dataMul保存为选项的数据
+     * $dataTempInner保存为问题中的小问题数量的name数组
+     * $dataTempRecMul保存为问题的选项数量的name数组
+   * */
+    public function countRecMul($recMul, $mulCount, $dataInner, $dataMul, $dataTempInner,$dataTempRecMul){
         $mul = array();
-        $k = 0;
+        $m = 0;
         for ($i = 0; $i < $mulCount; $i++) {
-            $data  = $dataMul[$i];
-//            var_dump($data);
+            //获取每个大的问题中有几个小问题
             for ($j = 0; $j < $recMul[$dataTempInner[$i]]; $j++) {
-//                var_dump($recMul[$dataInner[$i][$j]]);
-//                $result = $this->where('innerId',$recMul[$dataInner[$i][$j]])->select();
-                $str = $dataMul[$i][$j];
-                $result =  $this->where('answerId',$data[$i][$j])->where('innerId',$recMul[$dataInner[$i][$j]])->find();
-//               var_dump($j);
-//                var_dump($data[$i][$j]);
-                var_dump('kkkk');
-
-                if ($result == null) {
-                    var_dump('asa');
-                    $mul[$k]['innerId'] =$recMul[$dataInner[$i][$j]];
-                    $mul[$k]['answerId'] =$data[$i][$j];
-                    $mul[$k]['answerSum'] = 1;
-                } else {
-//                    var_dump($result);
-//                    $result = $result->toArray();
-                    $result->answerSum = $result->answerSum + 1;
-                    $result = $result->save();
-//                    var_dump($result);
+                //获取每个小问题有有几个选项
+                for($k = 0; $k < $recMul[$dataTempRecMul[$i][$j]] ;$k++){
+                    //判断数组中某个下标是否存在
+                    if(isset($dataMul[$i][$j][$k])){
+                        $result =  $this->where('answerId',$dataMul[$i][$j][$k])->where('innerId',$recMul[$dataInner[$i][$j]])->find();
+                        if ($result == null) {
+                            $mul[$m]['innerId'] =$recMul[$dataInner[$i][$j]];
+                            $mul[$m]['answerId'] =$dataMul[$i][$j][$k];
+                            $mul[$m]['answerSum'] = 1;
+                            $m = $m+1;
+                        } else {
+                            $result->answerSum = $result->answerSum + 1;
+                            $result = $result->save();
+                        }
+                    }
                 }
-                $result = $this->saveAll($mul);
-//                var_dump($result);
             }
         }
-
-        return '矩形单选题人数增加成功';
+        $result = $this->saveAll($mul);
+        return '矩形多选题人数增加成功';
     }
 }
